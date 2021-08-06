@@ -29,22 +29,18 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`upp docs [FILE]`](#upp-docs-file)
+* [`upp docs`](#upp-docs)
 * [`upp hello [FILE]`](#upp-hello-file)
 * [`upp help [COMMAND]`](#upp-help-command)
+* [`upp status [FILE]`](#upp-status-file)
 
-## `upp docs [FILE]`
+## `upp docs`
 
-describe the command here
+redirects to Upptime docs
 
 ```
 USAGE
-  $ upp docs [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  $ upp docs
 ```
 
 _See code: [src/commands/docs.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/docs.ts)_
@@ -56,15 +52,6 @@ describe the command here
 ```
 USAGE
   $ upp hello [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ upp hello
-  hello world from ./src/hello.ts!
 ```
 
 _See code: [src/commands/hello.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/hello.ts)_
@@ -85,4 +72,20 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
+
+## `upp status [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ upp status [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/status.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/status.ts)_
 <!-- commandsstop -->
