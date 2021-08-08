@@ -68,19 +68,23 @@ export default class Init extends Command {
     const issue_pat = await cli.prompt('Enter the issue personal access token', {
       type: 'mask',
     })
+    const commit_limit = await cli.prompt('Enter the limit for commits')
 
     const fileData =
-    `packages:
-      monitor: ${monitor_name}
-      graphs: ${graphs_name}
-      pages: ${pages_name}
+`packages:
+  monitor: ${monitor_name}
+  graphs: ${graphs_name}
+  pages: ${pages_name}
 
-    issues:
-      provider: ${issue_provider}
-      owner: ${issue_owner}
-      repo: ${issue_repo}
-      pat: ${issue_pat}
-    `
+issues:
+  provider: ${issue_provider}
+  owner: ${issue_owner}
+  repo: ${issue_repo}
+  pat: ${issue_pat}
+
+commits:
+  limit: ${commit_limit}
+`
     await fs.writeFileSync('.uclirc.yml', fileData)
     await this.log(chalk.green.inverse('✅ initialized successfully'))
   }
