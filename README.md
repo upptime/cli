@@ -20,7 +20,7 @@ $ npm install -g upp
 $ upp COMMAND
 running command...
 $ upp (-v|--version|version)
-upp/0.0.0 win32-x64 node-v14.3.0
+upp/0.0.0 darwin-x64 node-v12.18.3
 $ upp --help [COMMAND]
 USAGE
   $ upp COMMAND
@@ -32,7 +32,8 @@ USAGE
 * [`upp docs`](#upp-docs)
 * [`upp hello [FILE]`](#upp-hello-file)
 * [`upp help [COMMAND]`](#upp-help-command)
-* [`upp status [FILE]`](#upp-status-file)
+* [`upp init [FILE]`](#upp-init-file)
+* [`upp status`](#upp-status)
 
 ## `upp docs`
 
@@ -73,18 +74,29 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
-## `upp status [FILE]`
+## `upp init [FILE]`
 
 describe the command here
 
 ```
 USAGE
-  $ upp status [FILE]
+  $ upp init [FILE]
 
 OPTIONS
   -f, --force
   -h, --help       show CLI help
   -n, --name=name  name to print
+```
+
+_See code: [src/commands/init.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/init.ts)_
+
+## `upp status`
+
+updates about status of websites
+
+```
+USAGE
+  $ upp status
 ```
 
 _See code: [src/commands/status.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/status.ts)_
