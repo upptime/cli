@@ -62,13 +62,26 @@ export default class Init extends Command {
       pages_name = pages_responses.pages
     }
 
+    const issue_provider = await cli.prompt('Enter the issue provider name')
+    const issue_owner = await cli.prompt('Enter the issue owner name')
+    const issue_repo = await cli.prompt('Enter the issue repo name')
+    const issue_pat = await cli.prompt('Enter the issue personal access token', {
+      type: 'mask',
+    })
+
     const fileData =
     `packages:
       monitor: ${monitor_name}
       graphs: ${graphs_name}
       pages: ${pages_name}
+
+    issues:
+      provider: ${issue_provider}
+      owner: ${issue_owner}
+      repo: ${issue_repo}
+      pat: ${issue_pat}
     `
-    fs.writeFileSync('.uclirc.yml', fileData)
-    this.log(chalk.green.inverse('✅ initialized successfully'))
+    await fs.writeFileSync('.uclirc.yml', fileData)
+    await this.log(chalk.green.inverse('✅ initialized successfully'))
   }
 }
