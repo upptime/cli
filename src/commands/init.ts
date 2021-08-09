@@ -62,13 +62,44 @@ export default class Init extends Command {
       pages_name = pages_responses.pages
     }
 
-    const issue_provider = await cli.prompt('Enter the issue provider name')
+    const issue = await inquirer.prompt([
+      {
+        name: 'provider',
+        message: 'Select an issue provider',
+        type: 'list',
+        choices: [
+          {name: 'github'},
+          {name: 'gitlab'},
+          {name: 'local'},
+        ],
+      },
+    ])
     const issue_owner = await cli.prompt('Enter the issue owner name')
     const issue_repo = await cli.prompt('Enter the issue repo name')
     const issue_pat = await cli.prompt('Enter the issue personal access token', {
       type: 'mask',
     })
+
     const commit_limit = await cli.prompt('Enter the limit for commits')
+
+    const pages = await inquirer.prompt([
+      {
+        name: 'provider',
+        message: 'Select a pages provider',
+        type: 'list',
+        choices: [
+          {name: 'github'},
+          {name: 'gitlab'},
+          {name: 'local'},
+        ],
+      },
+    ])
+    const pages_owner = await cli.prompt('Enter the pages owner name')
+    const pages_repo = await cli.prompt('Enter the pages repo name')
+    const pages_branch = await cli.prompt('Enter the branch for the pages')
+    const pages_pat = await cli.prompt('Enter the pages personal access token', {
+      type: 'mask',
+    })
 
     const fileData =
 `packages:
@@ -77,15 +108,22 @@ export default class Init extends Command {
   pages: ${pages_name}
 
 issues:
-  provider: ${issue_provider}
+  provider: ${issue.provider}
   owner: ${issue_owner}
   repo: ${issue_repo}
   pat: ${issue_pat}
 
 commits:
   limit: ${commit_limit}
+
+pages:
+  provider: ${pages.provider}
+  owner: ${pages_owner}
+  repo: ${pages_repo}
+  branch: ${pages_branch}
+  pat: ${pages_pat}
 `
     await fs.writeFileSync('.uclirc.yml', fileData)
-    await this.log(chalk.green.inverse('✅ initialized successfully'))
+    this.log(chalk.green.inverse('✅ initialized successfully'))
   }
 }
