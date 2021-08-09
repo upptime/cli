@@ -11,7 +11,11 @@ export default class Init extends Command {
     let monitor_name
     let graphs_name
     let pages_name
-    // user inputs for config
+
+    // user inputs for configuration
+
+    // packages  //
+
     const monitor_responses = await inquirer.prompt([
       {
         name: 'monitor',
@@ -28,6 +32,7 @@ export default class Init extends Command {
     } else {
       monitor_name = monitor_responses.monitor
     }
+
     const graphs_responses = await inquirer.prompt([
       {
         name: 'graphs',
@@ -62,6 +67,8 @@ export default class Init extends Command {
       pages_name = pages_responses.pages
     }
 
+    // issue //
+
     const issue = await inquirer.prompt([
       {
         name: 'provider',
@@ -80,7 +87,11 @@ export default class Init extends Command {
       type: 'mask',
     })
 
+    // commit limit //
+
     const commit_limit = await cli.prompt('Enter the limit for commits')
+
+    // pages //
 
     const pages = await inquirer.prompt([
       {
@@ -101,6 +112,7 @@ export default class Init extends Command {
       type: 'mask',
     })
 
+    // .yml file data to put taken from the user
     const fileData =
 `packages:
   monitor: ${monitor_name}
@@ -123,7 +135,11 @@ pages:
   branch: ${pages_branch}
   pat: ${pages_pat}
 `
+
+    // generate a new .yml file or modifie/append new data
+
     await fs.writeFileSync('.uclirc.yml', fileData)
+
     this.log(chalk.green.inverse('✅ initialized successfully'))
   }
 }
