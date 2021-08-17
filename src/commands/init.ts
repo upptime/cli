@@ -20,7 +20,7 @@ export default class Init extends Command {
         {
           type: 'input',
           name: 'url',
-          message: 'Enter is  url?',
+          message: 'Enter site url?',
         },
       ])
       // .yml file data to put, taken from the user
