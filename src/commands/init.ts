@@ -26,7 +26,7 @@ export default class Init extends Command {
       // .yml file data to put, taken from the user
       const fileData = `sites:
   - name: ${response.name}
-  - url: ${response.url}`
+    url: ${response.url}`
       fs.writeFileSync('.uclirc.yml', fileData)
       // generate a new .yml file or modify/append new data
       this.log(chalk.green.inverse('✅ initialized successfully'))
