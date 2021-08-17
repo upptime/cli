@@ -1,6 +1,6 @@
 import { Command } from '@oclif/command'
 import fs = require('fs')
-import { cli } from 'cli-ux'
+import { prompt } from 'enquirer'
 import chalk = require('chalk')
 
 export default class Init extends Command {
@@ -11,11 +11,21 @@ export default class Init extends Command {
     if (fs.existsSync('.uclirc.yml')) {
       this.log(chalk.red('❌ Already Initialized'))
     } else {
-      const site_name = await cli.prompt('Enter the site name')
-      const site_url = await cli.prompt('Enter the site url')
+      const response = await prompt([
+        {
+          type: 'input',
+          name: 'name',
+          message: 'Enter site name?',
+        },
+        {
+          type: 'input',
+          name: 'url',
+          message: 'Enter is  url?',
+        },
+      ])
       // .yml file data to put, taken from the user
-      const fileData = `site name: ${site_name}
-site url: ${site_url}`
+      const fileData = `site name: ${response.name}
+site url: ${response.url}`
       fs.writeFileSync('.uclirc.yml', fileData)
       // generate a new .yml file or modify/append new data
       this.log(chalk.green.inverse('✅ initialized successfully'))
