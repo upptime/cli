@@ -20,7 +20,7 @@ $ npm install -g upp
 $ upp COMMAND
 running command...
 $ upp (-v|--version|version)
-upp/0.0.0 win32-x64 node-v14.3.0
+upp/0.0.0 linux-x64 node-v12.22.1
 $ upp --help [COMMAND]
 USAGE
   $ upp COMMAND
@@ -32,7 +32,9 @@ USAGE
 * [`upp docs`](#upp-docs)
 * [`upp hello [FILE]`](#upp-hello-file)
 * [`upp help [COMMAND]`](#upp-help-command)
-* [`upp status [FILE]`](#upp-status-file)
+* [`upp run`](#upp-run)
+* [`upp status`](#upp-status)
+* [`upp test [FILE]`](#upp-test-file)
 
 ## `upp docs`
 
@@ -73,13 +75,38 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
-## `upp status [FILE]`
+## `upp run`
+
+Run workflows
+
+```
+USAGE
+  $ upp run
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/run.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/run.ts)_
+
+## `upp status`
+
+updates about status of websites
+
+```
+USAGE
+  $ upp status
+```
+
+_See code: [src/commands/status.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/status.ts)_
+
+## `upp test [FILE]`
 
 describe the command here
 
 ```
 USAGE
-  $ upp status [FILE]
+  $ upp test [FILE]
 
 OPTIONS
   -f, --force
@@ -87,5 +114,5 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/status.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/status.ts)_
+_See code: [src/commands/test.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/test.ts)_
 <!-- commandsstop -->
