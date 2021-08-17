@@ -101,6 +101,7 @@ async run() {
         )
         this.log(logResult)
       }
+      this.log('--------------------------')
     })
   }
 
