@@ -1,6 +1,9 @@
 import {debug} from 'console'
 import {Curl, CurlFeature} from 'node-libcurl'
 import {UppConfig} from '../interfaces'
+import {join} from 'path'
+import {writeFileSync} from 'fs-extra'
+const tls = require('tls')
 
 export const curl = (site: UppConfig['sites'][0]):
 Promise<{httpCode: number; totalTime: number; data: string}> => new Promise(resolve => {
@@ -13,8 +16,13 @@ Promise<{httpCode: number; totalTime: number; data: string}> => new Promise(reso
   //   curl.setOpt(Curl.option.HTTPHEADER, site.headers.map(replaceEnvironmentVariables))
   // if (site.body) curl.setOpt('POSTFIELDS', replaceEnvironmentVariables(site.body))
 
-  // TODO:: Uncomment the below IF Statements
-  // if (site.__dangerous__insecure || site.__dangerous__disable_verify_peer)
+  // As per https://github.com/JCMais/node-libcurl/blob/develop/COMMON_ISSUES.md
+  const certFilePath = join('../../', 'cacert-2021-07-05.pem')
+  const tlsData = tls.rootCertificates.join('\n')
+  writeFileSync(certFilePath, tlsData)
+  curl.setOpt(Curl.option.CAINFO, certFilePath)
+
+  if (site.__dangerous__insecure || site.__dangerous__disable_verify_peer)
     curl.setOpt('SSL_VERIFYPEER', false)
   if (site.__dangerous__insecure || site.__dangerous__disable_verify_host)
     curl.setOpt('SSL_VERIFYHOST', false)
