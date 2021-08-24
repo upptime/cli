@@ -22,6 +22,32 @@ export interface UppConfig{
       __dangerous__body_degraded_if_text_missing?: string;
     }[];
    workflowSchedule?: {
-      updates: string;
+      graphs?: string;
+      staticSite?: string;
+      summary?: string;
+      uptime?: string;
+   };
+   commitMessages?: {
+      readmeContent?: string;
+      summaryJson?: string;
+      statusChange?: string;
+      graphsUpdate?: string;
+      commitAuthorName?: string;
+      commitAuthorEmail?: string;
+   };
+   commitPrefixStatusUp?: string;
+   commitPrefixStatusDown?: string;
+   commitPrefixStatusDegraded?: string;
+   commits?: {
+      provider?: 'GitHub';
    };
 }
+export interface SiteHistory {
+   url: string;
+   status: 'up' | 'down' | 'degraded';
+   code: number;
+   responseTime: number;
+   lastUpdated?: string;
+   startTime?: string;
+   generator: 'Upptime <https://github.com/upptime/upptime>';
+ }

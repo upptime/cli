@@ -20,7 +20,7 @@ $ npm install -g upp
 $ upp COMMAND
 running command...
 $ upp (-v|--version|version)
-upp/0.0.0 linux-x64 node-v12.22.1
+upp/0.0.0 linux-x64 node-v14.17.0
 $ upp --help [COMMAND]
 USAGE
   $ upp COMMAND
@@ -30,11 +30,11 @@ USAGE
 # Commands
 <!-- commands -->
 * [`upp docs`](#upp-docs)
+* [`upp heee [FILE]`](#upp-heee-file)
 * [`upp hello [FILE]`](#upp-hello-file)
 * [`upp help [COMMAND]`](#upp-help-command)
-* [`upp run`](#upp-run)
+* [`upp run [ITERATIONS]`](#upp-run-iterations)
 * [`upp status`](#upp-status)
-* [`upp test [FILE]`](#upp-test-file)
 
 ## `upp docs`
 
@@ -46,6 +46,22 @@ USAGE
 ```
 
 _See code: [src/commands/docs.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/docs.ts)_
+
+## `upp heee [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ upp heee [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/heee.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/heee.ts)_
 
 ## `upp hello [FILE]`
 
@@ -75,16 +91,22 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
-## `upp run`
+## `upp run [ITERATIONS]`
 
 Run workflows
 
 ```
 USAGE
-  $ upp run
+  $ upp run [ITERATIONS]
 
 OPTIONS
-  -h, --help  show CLI help
+  -S, --setup
+  -g, --graphs
+  -h, --help                   show CLI help
+  -i, --iterations=iterations  number of iterations
+  -p, --pages
+  -s, --summary
+  -u, --uptime
 ```
 
 _See code: [src/commands/run.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/run.ts)_
@@ -99,20 +121,4 @@ USAGE
 ```
 
 _See code: [src/commands/status.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/status.ts)_
-
-## `upp test [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ upp test [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-```
-
-_See code: [src/commands/test.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/test.ts)_
 <!-- commandsstop -->
