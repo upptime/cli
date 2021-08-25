@@ -132,5 +132,16 @@ USAGE
   $ upp status
 ```
 
+_See code: [src/commands/init.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/init.ts)_
+
+## `upp status`
+
+updates about status of websites
+
+```
+USAGE
+  $ upp status
+```
+
 _See code: [src/commands/status.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/status.ts)_
 <!-- commandsstop -->
