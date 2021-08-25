@@ -1,4 +1,5 @@
-/* eslint-disable no-console */
+import {infoErrorLogger} from './helpers/log'
+
 export const generateSummary = async () => {
-  console.log('Generate Summary')
+  infoErrorLogger.info('Generate Summary')
 }

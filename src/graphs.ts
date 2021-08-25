@@ -1,4 +1,5 @@
-/* eslint-disable no-console */
+import {infoErrorLogger} from './helpers/log'
+
 export const generateGraphs = async () => {
-  console.log('Generate Graphs')
+  infoErrorLogger.info('Generate Graphs')
 }

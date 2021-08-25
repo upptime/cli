@@ -1,4 +1,5 @@
-/* eslint-disable no-console */
+import {infoErrorLogger} from './helpers/log'
+
 export const generateSite = async () => {
-  console.log('Generate Site')
+  infoErrorLogger.info('Generate Site')
 }
