@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable complexity */
 
 import slugify from '@sindresorhus/slugify'
@@ -8,6 +7,7 @@ import {join} from 'path'
 import {getConfig} from './helpers/config'
 // import {replaceEnvironmentVariables} from './helpers/environment'
 import {commit, push} from './helpers/git'
+import {infoErrorLogger} from './helpers/log'
 import {ping} from './helpers/ping'
 import {curl} from './helpers/request'
 import {SiteHistory} from './interfaces'
@@ -22,7 +22,7 @@ export const update = async (shouldCommit = false) => {
   let hasDelta = false
 
   for await (const site of config.sites) {
-    console.log('Checking', site.url)
+    infoErrorLogger.info(`Checking ${site.url}`)
     const slug = site.slug || slugify(site.name)
     let currentStatus = 'unknown'
     let startTime = new Date()
@@ -36,7 +36,7 @@ export const update = async (shouldCommit = false) => {
       currentStatus = siteHistory.status || 'unknown'
       startTime = new Date(siteHistory.startTime || new Date())
     } catch (error) {}
-    console.log('Current status', site.slug, currentStatus, startTime)
+    infoErrorLogger.info(`Current status ${site.slug} ${currentStatus} ${startTime}`)
 
     /**
      * Check whether the site is online
@@ -49,7 +49,7 @@ export const update = async (shouldCommit = false) => {
       status: 'up' | 'down' | 'degraded';
     }> => {
       if (site.check === 'tcp-ping') {
-        console.log('Using tcp-ping instead of curl')
+        infoErrorLogger.info('Using tcp-ping instead of curl')
         try {
           let status: 'up' | 'down' | 'degraded' = 'up'
           const tcpResult = await ping({
@@ -60,19 +60,19 @@ export const update = async (shouldCommit = false) => {
             port: Number(site.port),
           })
           if (tcpResult.avg > (site.maxResponseTime || 60000)) status = 'degraded'
-          console.log('Got result', tcpResult)
+          infoErrorLogger.info(`Got result ${tcpResult}`)
           return {
             result: {httpCode: 200},
             responseTime: (tcpResult.avg || 0).toFixed(0),
             status,
           }
         } catch (error) {
-          console.log('Got pinging error', error)
+          infoErrorLogger.info(`Got pinging error ${error}`)
           return {result: {httpCode: 0}, responseTime: (0).toFixed(0), status: 'down'}
         }
       } else {
         const result = await curl(site)
-        console.log('Result from test', result.httpCode, result.totalTime)
+        infoErrorLogger.info(`Result from test ${result.httpCode} ${result.totalTime}`)
         const responseTime = (result.totalTime * 1000).toFixed(0)
         const expectedStatusCodes = (
           site.expectedStatusCodes || [
@@ -186,16 +186,16 @@ generator: Upptime <https://github.com/upptime/upptime>
           (config.commitMessages || {}).commitAuthorEmail
         )
         if (currentStatus === status) {
-          console.log('Status is the same', currentStatus, status)
+          infoErrorLogger.info(`Status is the same ${currentStatus} ${status}`)
         } else {
-          console.log('Status is different', currentStatus, 'to', status)
+          infoErrorLogger.info(`Status is different ${currentStatus} to ${status}`)
           hasDelta = true
         }
       } else {
-        console.log('Skipping commit, ', 'status is', status)
+        infoErrorLogger.info(`Skipping commit, status is ${status}`)
       }
     } catch (error) {
-      console.log('ERROR', error)
+      infoErrorLogger.error(`${error}`)
     }
   }
   if (config.commits?.provider && config.commits?.provider === 'GitHub')
