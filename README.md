@@ -20,7 +20,7 @@ $ npm install -g upp
 $ upp COMMAND
 running command...
 $ upp (-v|--version|version)
-upp/0.0.0 linux-x64 node-v14.17.0
+upp/0.0.0 darwin-x64 node-v12.18.3
 $ upp --help [COMMAND]
 USAGE
   $ upp COMMAND
@@ -30,10 +30,9 @@ USAGE
 # Commands
 <!-- commands -->
 * [`upp docs`](#upp-docs)
-* [`upp heee [FILE]`](#upp-heee-file)
-* [`upp hello [FILE]`](#upp-hello-file)
 * [`upp help [COMMAND]`](#upp-help-command)
 * [`upp run [ITERATIONS]`](#upp-run-iterations)
+* [`upp init [FILE]`](#upp-init-file)
 * [`upp status`](#upp-status)
 
 ## `upp docs`
@@ -92,12 +91,14 @@ OPTIONS
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
 ## `upp run [ITERATIONS]`
+## `upp init [FILE]`
 
 Run workflows
 
 ```
 USAGE
   $ upp run [ITERATIONS]
+  $ upp init [FILE]
 
 OPTIONS
   -S, --setup
@@ -110,6 +111,17 @@ OPTIONS
 ```
 
 _See code: [src/commands/run.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/run.ts)_
+
+## `upp status`
+
+updates about status of websites
+
+```
+USAGE
+  $ upp status
+```
+
+_See code: [src/commands/init.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/init.ts)_
 
 ## `upp status`
 
