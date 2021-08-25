@@ -30,8 +30,8 @@ USAGE
 # Commands
 <!-- commands -->
 * [`upp docs`](#upp-docs)
-* [`upp hello [FILE]`](#upp-hello-file)
 * [`upp help [COMMAND]`](#upp-help-command)
+* [`upp run [ITERATIONS]`](#upp-run-iterations)
 * [`upp init [FILE]`](#upp-init-file)
 * [`upp status`](#upp-status)
 
@@ -45,6 +45,22 @@ USAGE
 ```
 
 _See code: [src/commands/docs.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/docs.ts)_
+
+## `upp heee [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ upp heee [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/heee.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/heee.ts)_
 
 ## `upp hello [FILE]`
 
@@ -74,18 +90,46 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
+## `upp run [ITERATIONS]`
 ## `upp init [FILE]`
 
-describe the command here
+Run workflows
 
 ```
 USAGE
+  $ upp run [ITERATIONS]
   $ upp init [FILE]
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -S, --setup
+  -g, --graphs
+  -h, --help                   show CLI help
+  -i, --iterations=iterations  number of iterations
+  -p, --pages
+  -s, --summary
+  -u, --uptime
+```
+
+_See code: [src/commands/run.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/run.ts)_
+
+## `upp status`
+
+updates about status of websites
+
+```
+USAGE
+  $ upp status
+```
+
+_See code: [src/commands/init.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/init.ts)_
+
+## `upp status`
+
+updates about status of websites
+
+```
+USAGE
+  $ upp status
 ```
 
 _See code: [src/commands/init.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/init.ts)_
