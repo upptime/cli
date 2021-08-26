@@ -2,10 +2,10 @@ import { Command } from '@oclif/command'
 import { load } from 'js-yaml'
 import { readFile } from 'fs-extra'
 import { join } from 'path'
-import { SiteHistory } from '../interfaces'
+import { SiteStatus } from '../interfaces'
 import { getConfig } from '../helpers/config'
+import { cli } from 'cli-ux'
 import slugify from '@sindresorhus/slugify'
-import chalk from 'chalk'
 
 export default class Status extends Command {
   static description = 'updates about status of websites'
@@ -13,23 +13,44 @@ export default class Status extends Command {
   async run() {
     const config = await getConfig()
     let i = 0
+    const arr = []
     for await (const site of config.sites) {
       const slug = site.slug || slugify(site.name)
-      const currentStatus = 'unknown'
-      const startTime = new Date()
       try {
-        const data = load(
-          (await readFile(join('.', 'history', `${slug}.yml`), 'utf8'))) as SiteHistory
+        const _data = load(
+          (await readFile(join('.', 'history', `${slug}.yml`), 'utf8'))) as SiteStatus
         i++
-        this.log(chalk.bgCyan.black('Site ', i))
-        this.log('URL:', data.url)
-        this.log('Status:', data.status, data.status === 'up' ? '🟩' : '🟥')
-        this.log('CODE:', data.code)
-        this.log('Response Time:', data.responseTime, '🕐')
-        this.log('--------------------------------------------')
+        const data = Object.assign({ }, _data, {
+          idx: i,
+        })
+        arr.push(data)
       } catch (error) {
-        this.log('Current status', site.slug, currentStatus, startTime)
+        this.log('Current status not available')
       }
     }
+    cli.table(arr, {
+      idx: {
+        header: '',
+      },
+      url: {
+        header: 'Website',
+        minWidth: 7,
+      },
+      status: {
+        header: 'Status',
+        get: row => row.status === 'up' ? `${row.status} 🟩` : row.status === 'down' ? `${row.status} 🟥` : `${row.status} 🟨`,
+        minWidth: 6,
+      },
+      code: {
+        header: 'CODE',
+        minWidth: 4,
+      },
+      responseTime: {
+        header: 'Response Time',
+        minWidth: 6,
+      },
+    }, {
+      printLine: this.log,
+    })
   }
 }
