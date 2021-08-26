@@ -1,4 +1,4 @@
-export interface UppConfig{
+export interface UppConfig {
    sites: {
       check?: 'http' | 'tcp-ping';
       method?: string;
@@ -20,7 +20,7 @@ export interface UppConfig{
       __dangerous__body_down_if_text_missing?: string;
       __dangerous__body_degraded?: string;
       __dangerous__body_degraded_if_text_missing?: string;
-    }[];
+   }[];
    workflowSchedule?: {
       graphs?: string;
       staticSite?: string;
@@ -50,4 +50,10 @@ export interface SiteHistory {
    lastUpdated?: string;
    startTime?: string;
    generator: 'Upptime <https://github.com/upptime/upptime>';
- }
+}
+export interface SiteStatus {
+   url: string;
+   status: 'up' | 'down' | 'degraded';
+   code: number;
+   responseTime: number;
+}
