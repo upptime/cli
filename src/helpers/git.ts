@@ -20,9 +20,11 @@ const _setNameAndEmail = (
 
 export const commit = (
   message: string,
+  name: string | undefined,
+  email: string | undefined
 ) => {
   const {currName: prevName, currEmail: prevEmail} = _getNameAndEmail()
-  _setNameAndEmail()
+  _setNameAndEmail(name, email)
   exec('git add .')
   exec(`git commit -m "${message.replace(/"/g, "''")}"`)
   _setNameAndEmail(prevName, prevEmail)
