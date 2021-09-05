@@ -9,3 +9,9 @@
 2021-09-05T12:15:04.822Z info: Checking https://www.google.com
 2021-09-05T12:15:04.823Z info: Current status undefined unknown Sun Sep 05 2021 17:45:04 GMT+0530 (India Standard Time)
 2021-09-05T12:15:05.691Z info: Result from test 200 0.866837
+2021-09-05T12:15:06.227Z info: Status is different unknown to up
+2021-09-05T12:15:06.227Z info: Checking https://in.yahoo.com
+2021-09-05T12:15:06.229Z info: Current status undefined unknown Sun Sep 05 2021 17:45:06 GMT+0530 (India Standard Time)
+2021-09-05T12:15:08.754Z info: Result from test 200 2.523434
+2021-09-05T12:15:09.834Z info: Status is different unknown to up
+2021-09-05T12:15:09.834Z info: Generate Summary

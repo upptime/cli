@@ -8,3 +8,5 @@ sites:
     url: https://www.google.com
   - name: Yahoo
     url: https://in.yahoo.com
+  - name: Test
+    url: https://thissitedoesnotexist.koj.co/
