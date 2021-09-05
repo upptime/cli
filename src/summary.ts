@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import slugify from '@sindresorhus/slugify'
-import {mkdirp, readdir, readFile, writeFile, writeFileSync} from 'fs-extra'
+import {mkdirp, readFile, writeFile, writeFileSync} from 'fs-extra'
 import {join} from 'path'
 import {format} from 'prettier'
 import {getResponseTimeForSite} from './helpers/calculate-response-time'
@@ -245,19 +245,6 @@ ${config.summaryEndHtmlComment || '<!--end: status pages-->'}${endText}`
     (config.commitMessages || {}).commitAuthorName,
     (config.commitMessages || {}).commitAuthorEmail
   )
-
-  // If there are any old workflows left, fix them
-  const workflows = (await readdir(join('.', '.github', 'workflows'))).filter(i =>
-    i.endsWith('.yml')
-  )
-  for await (const workflow of workflows) {
-    const content = await readFile(join('.', '.github', 'workflows', workflow), 'utf8')
-    const newContent = content.replace('actions/setup-node@v2.1.1', 'actions/setup-node@v1.4.4')
-    if (content !== newContent) {
-      infoErrorLogger.info('Updating workflow', workflow)
-      await writeFile(join('.', '.github', 'workflows', workflow), newContent)
-    }
-  }
 
   await writeFile(join('.', 'history', 'summary.json'), JSON.stringify(pageStatuses, null, 2))
   commit(
