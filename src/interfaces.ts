@@ -57,6 +57,14 @@ export interface SiteStatus {
    code: number;
    responseTime: number;
 }
+export interface DownPecentages {
+   day: string;
+   week: string;
+   month: string;
+   year: string;
+   all: string;
+   dailyMinutesDown: Record<string, number>;
+}
 export interface Incident {
    incidents: {
       name : string;
@@ -64,3 +72,5 @@ export interface Incident {
       timestamp : string;
    }[];
 }
+
+
