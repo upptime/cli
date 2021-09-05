@@ -57,3 +57,10 @@ export interface SiteStatus {
    code: number;
    responseTime: number;
 }
+export interface Incident {
+   incidents: {
+      name : string;
+      url : string;
+      timestamp : string;
+   }[];
+}
