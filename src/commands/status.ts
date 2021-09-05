@@ -25,7 +25,7 @@ export default class Status extends Command {
         })
         arr.push(data)
       } catch (error) {
-        this.log('Current status not available')
+        this.log('Current status not available, use run command first')
       }
     }
     cli.table(arr, {
