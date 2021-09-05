@@ -5,7 +5,6 @@ import chalk = require('chalk')
 
 export default class Init extends Command {
   static description = 'initializes upptime';
-
   async run() {
     // user inputs for configuration
     if (fs.existsSync('.uclirc.yml')) {
