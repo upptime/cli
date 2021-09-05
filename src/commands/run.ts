@@ -43,7 +43,7 @@ async run() {
       if (flags.graphs)
         queue.add(generateSite)
       if (flags.summary)
-        queue.add(generateSite)
+        queue.add(generateSummary)
     }
   } else {
     if (flags.uptime)
