@@ -1,4 +1,5 @@
 import {exec} from 'shelljs'
+import {infoErrorLogger} from './log'
 
 const _getNameAndEmail = () => {
   const currName = exec('git config --list', {silent: true}).grep('user.name=').stdout.split(
@@ -20,11 +21,16 @@ const _setNameAndEmail = (
 
 export const commit = (
   message: string,
+  name: string | undefined,
+  email: string | undefined
 ) => {
   const {currName: prevName, currEmail: prevEmail} = _getNameAndEmail()
-  _setNameAndEmail()
+  _setNameAndEmail(name, email)
   exec('git add .')
-  exec(`git commit -m "${message.replace(/"/g, "''")}"`)
+  infoErrorLogger.info(
+    exec(`git commit -m "${message.replace(/"/g, "''")}"`, {silent: true})
+    .stdout
+  )
   _setNameAndEmail(prevName, prevEmail)
 }
 
