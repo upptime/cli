@@ -10,7 +10,7 @@ const avg = (array: number[]) => (array.length > 0 ? array.reduce((a, b) => a + 
 
 /** Get commits for a history file */
 
-const getHistoryItems = async (
+export const getHistoryItems = async (
   slug: string,
 ) => {
   const results = exec(`git log --pretty=format:"%h%x09%ad%x09%s" --date=default  --all --first-parent --author-date-order -- ./history/${slug}.yml`, {silent: true}).stdout.split('\n')
