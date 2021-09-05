@@ -15,3 +15,92 @@
 2021-09-05T12:15:08.754Z info: Result from test 200 2.523434
 2021-09-05T12:15:09.834Z info: Status is different unknown to up
 2021-09-05T12:15:09.834Z info: Generate Summary
+2021-09-05T12:25:00.945Z info: Checking https://www.github.com
+2021-09-05T12:25:00.951Z info: Current status undefined up Sun Sep 05 2021 17:45:00 GMT+0530 (India Standard Time)
+2021-09-05T12:25:01.427Z info: Result from test 200 0.467685
+2021-09-05T12:25:01.428Z info: Skipping commit, status is up
+2021-09-05T12:25:01.428Z info: Checking https://www.wikipedia.org
+2021-09-05T12:25:01.436Z info: Current status undefined up Sun Sep 05 2021 17:45:02 GMT+0530 (India Standard Time)
+2021-09-05T12:25:01.911Z info: Result from test 200 0.470699
+2021-09-05T12:25:01.912Z info: Skipping commit, status is up
+2021-09-05T12:25:01.912Z info: Checking https://www.google.com
+2021-09-05T12:25:01.918Z info: Current status undefined up Sun Sep 05 2021 17:45:04 GMT+0530 (India Standard Time)
+2021-09-05T12:25:02.641Z info: Result from test 200 0.719748
+2021-09-05T12:25:02.641Z info: Skipping commit, status is up
+2021-09-05T12:25:02.642Z info: Checking https://in.yahoo.com
+2021-09-05T12:25:02.646Z info: Current status undefined up Sun Sep 05 2021 17:45:06 GMT+0530 (India Standard Time)
+2021-09-05T12:25:05.032Z info: Result from test 200 2.38395
+2021-09-05T12:25:05.033Z info: Skipping commit, status is up
+2021-09-05T12:25:05.033Z info: Checking https://thissitedoesnotexist.koj.co/
+2021-09-05T12:25:05.035Z info: Current status undefined unknown Sun Sep 05 2021 17:55:05 GMT+0530 (India Standard Time)
+2021-09-05T12:25:05.053Z info: Result from test 0 0
+2021-09-05T12:25:05.056Z info: Result from test 0 0
+2021-09-05T12:25:05.059Z info: Result from test 0 0
+2021-09-05T12:25:05.885Z info: Status is different unknown to down
+2021-09-05T12:25:05.885Z info: Generate Summary
+2021-09-05T12:30:00.526Z info: Checking https://www.github.com
+2021-09-05T12:30:00.531Z info: Current status undefined up Sun Sep 05 2021 17:45:00 GMT+0530 (India Standard Time)
+2021-09-05T12:30:00.982Z info: Result from test 200 0.443643
+2021-09-05T12:30:00.982Z info: Skipping commit, status is up
+2021-09-05T12:30:00.982Z info: Checking https://www.wikipedia.org
+2021-09-05T12:30:00.988Z info: Current status undefined up Sun Sep 05 2021 17:45:02 GMT+0530 (India Standard Time)
+2021-09-05T12:30:01.459Z info: Result from test 200 0.466802
+2021-09-05T12:30:01.459Z info: Skipping commit, status is up
+2021-09-05T12:30:01.459Z info: Checking https://www.google.com
+2021-09-05T12:30:01.463Z info: Current status undefined up Sun Sep 05 2021 17:45:04 GMT+0530 (India Standard Time)
+2021-09-05T12:30:02.093Z info: Result from test 200 0.626537
+2021-09-05T12:30:02.093Z info: Skipping commit, status is up
+2021-09-05T12:30:02.093Z info: Checking https://in.yahoo.com
+2021-09-05T12:30:02.096Z info: Current status undefined up Sun Sep 05 2021 17:45:06 GMT+0530 (India Standard Time)
+2021-09-05T12:30:04.745Z info: Result from test 200 2.644703
+2021-09-05T12:30:04.745Z info: Skipping commit, status is up
+2021-09-05T12:30:04.745Z info: Checking https://thissitedoesnotexist.koj.co/
+2021-09-05T12:30:04.748Z info: Current status undefined down Sun Sep 05 2021 17:55:05 GMT+0530 (India Standard Time)
+2021-09-05T12:30:04.753Z info: Result from test 0 0
+2021-09-05T12:30:04.756Z info: Result from test 0 0
+2021-09-05T12:30:04.759Z info: Result from test 0 0
+2021-09-05T12:30:04.759Z info: Skipping commit, status is down
+2021-09-05T12:35:00.119Z info: Checking https://www.github.com
+2021-09-05T12:35:00.125Z info: Current status undefined up Sun Sep 05 2021 17:45:00 GMT+0530 (India Standard Time)
+2021-09-05T12:35:01.217Z info: Result from test 200 1.085541
+2021-09-05T12:35:01.217Z info: Skipping commit, status is up
+2021-09-05T12:35:01.218Z info: Checking https://www.wikipedia.org
+2021-09-05T12:35:01.221Z info: Current status undefined up Sun Sep 05 2021 17:45:02 GMT+0530 (India Standard Time)
+2021-09-05T12:35:02.142Z info: Result from test 200 0.915138
+2021-09-05T12:35:02.143Z info: Skipping commit, status is up
+2021-09-05T12:35:02.143Z info: Checking https://www.google.com
+2021-09-05T12:35:02.147Z info: Current status undefined up Sun Sep 05 2021 17:45:04 GMT+0530 (India Standard Time)
+2021-09-05T12:35:02.796Z info: Result from test 200 0.645828
+2021-09-05T12:35:02.797Z info: Skipping commit, status is up
+2021-09-05T12:35:02.797Z info: Checking https://in.yahoo.com
+2021-09-05T12:35:02.801Z info: Current status undefined up Sun Sep 05 2021 17:45:06 GMT+0530 (India Standard Time)
+2021-09-05T12:35:04.404Z info: Result from test 200 1.595982
+2021-09-05T12:35:04.405Z info: Skipping commit, status is up
+2021-09-05T12:35:04.405Z info: Checking https://thissitedoesnotexist.koj.co/
+2021-09-05T12:35:04.409Z info: Current status undefined down Sun Sep 05 2021 17:55:05 GMT+0530 (India Standard Time)
+2021-09-05T12:35:04.424Z info: Result from test 0 0
+2021-09-05T12:35:04.430Z info: Result from test 0 0
+2021-09-05T12:35:04.440Z info: Result from test 0 0
+2021-09-05T12:35:04.440Z info: Skipping commit, status is down
+2021-09-05T12:40:00.672Z info: Checking https://www.github.com
+2021-09-05T12:40:00.674Z info: Current status undefined up Sun Sep 05 2021 17:45:00 GMT+0530 (India Standard Time)
+2021-09-05T12:40:01.155Z info: Result from test 200 0.477314
+2021-09-05T12:40:01.155Z info: Skipping commit, status is up
+2021-09-05T12:40:01.155Z info: Checking https://www.wikipedia.org
+2021-09-05T12:40:01.159Z info: Current status undefined up Sun Sep 05 2021 17:45:02 GMT+0530 (India Standard Time)
+2021-09-05T12:40:01.609Z info: Result from test 200 0.448283
+2021-09-05T12:40:01.610Z info: Skipping commit, status is up
+2021-09-05T12:40:01.610Z info: Checking https://www.google.com
+2021-09-05T12:40:01.612Z info: Current status undefined up Sun Sep 05 2021 17:45:04 GMT+0530 (India Standard Time)
+2021-09-05T12:40:02.301Z info: Result from test 200 0.686344
+2021-09-05T12:40:02.301Z info: Skipping commit, status is up
+2021-09-05T12:40:02.301Z info: Checking https://in.yahoo.com
+2021-09-05T12:40:02.305Z info: Current status undefined up Sun Sep 05 2021 17:45:06 GMT+0530 (India Standard Time)
+2021-09-05T12:40:04.777Z info: Result from test 200 2.466125
+2021-09-05T12:40:04.777Z info: Skipping commit, status is up
+2021-09-05T12:40:04.777Z info: Checking https://thissitedoesnotexist.koj.co/
+2021-09-05T12:40:04.780Z info: Current status undefined down Sun Sep 05 2021 17:55:05 GMT+0530 (India Standard Time)
+2021-09-05T12:40:04.808Z info: Result from test 0 0
+2021-09-05T12:40:04.814Z info: Result from test 0 0
+2021-09-05T12:40:04.823Z info: Result from test 0 0
+2021-09-05T12:40:04.823Z info: Skipping commit, status is down
