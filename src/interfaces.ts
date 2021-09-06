@@ -26,6 +26,7 @@ export interface UppConfig {
       staticSite?: string;
       summary?: string;
       uptime?: string;
+      responseTime?: string;
    };
    commitMessages?: {
       readmeContent?: string;
