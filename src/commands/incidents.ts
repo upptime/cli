@@ -9,6 +9,7 @@ export default class Incidents extends Command {
   static description = 'reports all the incidents/downtimes'
 
   async run() {
+    
     const arr = []
     let i = 0
       try {
