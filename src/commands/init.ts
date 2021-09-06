@@ -2,13 +2,24 @@ import { Command } from '@oclif/command'
 import fs = require('fs')
 import { prompt } from 'enquirer'
 import chalk = require('chalk')
+import { execSync } from 'child_process'
 
 export default class Init extends Command {
   static description = 'initializes upptime';
 
   async run() {
     // user inputs for configuration
-    if (fs.existsSync('.uclirc.yml')) {
+    function testForGit(this: any) {
+      try {
+        return execSync('git rev-parse --is-inside-work-tree 2>/dev/null', { encoding: 'utf8' })
+      } catch (error) {
+        this.log(error)
+      }
+    }
+
+    if (!testForGit()) {
+      this.log(chalk.bgRed('Directory is not git initialised'))
+    } else if (fs.existsSync('.uclirc.yml')) {
       this.log(chalk.red('❌ Already Initialized'))
     } else {
       const response = await prompt([
