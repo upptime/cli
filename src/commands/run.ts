@@ -41,9 +41,9 @@ async run() {
       if (flags.staticSite)
         queue.add(generateSite)
       if (flags.graphs)
-        queue.add(generateSite)
+        queue.add(generateGraphs)
       if (flags.summary)
-        queue.add(generateSite)
+        queue.add(generateSummary)
     }
   } else {
     if (flags.uptime)
