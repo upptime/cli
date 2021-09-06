@@ -95,30 +95,30 @@ export interface SiteHistory {
    generator: 'Upptime <https://github.com/upptime/upptime>';
 }
 export interface SiteStatus {
-  /** Name of site */
-  name: string;
-  /** Short slug of the site */
-  slug: string;
-  /** Full URL of the site */
-  url: string;
-  /** Favicon URL of the site */
-  icon: string;
-  /** Current status, up or down */
-  status: 'up' | 'down' | 'degraded';
-  /** Current response time (ms) */
-  time: number;
-  timeDay: number;
-  timeWeek: number;
-  timeMonth: number;
-  timeYear: number;
-  /** Total uptime percentage */
-  uptime: string;
-  uptimeDay: string;
-  uptimeWeek: string;
-  uptimeMonth: string;
-  uptimeYear: string;
-  /** Summary for downtimes */
-  dailyMinutesDown: Record<string, number>;
+   /** Name of site */
+   name: string;
+   /** Short slug of the site */
+   slug: string;
+   /** Full URL of the site */
+   url: string;
+   /** Favicon URL of the site */
+   icon: string;
+   /** Current status, up or down */
+   status: 'up' | 'down' | 'degraded';
+   /** Current response time (ms) */
+   time: number;
+   timeDay: number;
+   timeWeek: number;
+   timeMonth: number;
+   timeYear: number;
+   /** Total uptime percentage */
+   uptime: string;
+   uptimeDay: string;
+   uptimeWeek: string;
+   uptimeMonth: string;
+   uptimeYear: string;
+   /** Summary for downtimes */
+   dailyMinutesDown: Record<string, number>;
 }
 export interface Downtimes {
    day: number;
@@ -135,4 +135,11 @@ export interface DownPecentages {
    year: string;
    all: string;
    dailyMinutesDown: Record<string, number>;
- }
+}
+export interface Incident {
+   incidents: {
+      name: string;
+      url: string;
+      timestamp: string;
+   }[];
+}
