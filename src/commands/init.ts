@@ -17,11 +17,21 @@ export default class Init extends Command {
       }
     }
 
+    const gitignoreData = `
+
+down.log
+error.log
+status.log
+info.log`
+
     if (!testForGit()) {
       this.log(chalk.bgRed('Directory is not git initialised'))
     } else if (fs.existsSync('.uclirc.yml')) {
       this.log(chalk.red('❌ Already Initialized'))
     } else {
+      if (fs.existsSync('.gitignore')) {
+        fs.appendFileSync('.gitignore', gitignoreData)
+      }
       const response = await prompt([
         {
           type: 'input',
