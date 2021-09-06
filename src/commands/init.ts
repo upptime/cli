@@ -31,6 +31,8 @@ info.log`
     } else {
       if (fs.existsSync('.gitignore')) {
         fs.appendFileSync('.gitignore', gitignoreData)
+      } else {
+        fs.writeFileSync('.gitignore', gitignoreData)
       }
       const response = await prompt([
         {
