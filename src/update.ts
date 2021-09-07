@@ -154,7 +154,8 @@ export const update = async (shouldCommit = false) => {
             const data = `incidents:
           - name: ${site.name}
             url: ${site.url}
-            timestamp: ${new Date().toISOString()}
+            posted: ${new Date().toISOString()}
+            resolved: ${new Date().toISOString()}
            `
             fs.writeFileSync('incidents.yml', data)
           }
