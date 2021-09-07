@@ -12,6 +12,7 @@ import {ping} from './helpers/ping'
 import {curl} from './helpers/request'
 import {SiteHistory} from './interfaces'
 import {generateSummary} from './summary'
+import fs from 'fs'
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 export const update = async (shouldCommit = false) => {
@@ -147,9 +148,18 @@ export const update = async (shouldCommit = false) => {
           responseTime = thirdTry.responseTime
           status = thirdTry.status
         }
+        else{
+          /* Adding down time to incidents.yml */
+          if (thirdTry.status === 'down' || thirdTry.status === 'degraded') {
+            const data = `incidents:
+          - name: ${site.name}
+            url: ${site.url}
+            timestamp: ${new Date().toISOString()}
+           `
+            fs.writeFileSync('incidents.yml', data)
+          }
       }
     }
-
     try {
       if (shouldCommit || currentStatus !== status) {
         await writeFile(
@@ -201,4 +211,4 @@ generator: Upptime <https://github.com/upptime/upptime>
   if (config.commits?.provider && config.commits?.provider === 'GitHub')
     push()
   if (hasDelta) generateSummary()
-}
+}}
