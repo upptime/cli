@@ -20,7 +20,7 @@ $ npm install -g upp
 $ upp COMMAND
 running command...
 $ upp (-v|--version|version)
-upp/0.0.0 darwin-x64 node-v12.18.3
+upp/0.0.0 darwin-x64 node-v14.17.6
 $ upp --help [COMMAND]
 USAGE
   $ upp COMMAND
@@ -29,11 +29,28 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`upp config [FILE]`](#upp-config-file)
 * [`upp docs`](#upp-docs)
 * [`upp help [COMMAND]`](#upp-help-command)
+* [`upp init`](#upp-init)
 * [`upp run [ITERATIONS]`](#upp-run-iterations)
-* [`upp init [FILE]`](#upp-init-file)
 * [`upp status`](#upp-status)
+
+## `upp config [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ upp config [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/config.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/config.ts)_
 
 ## `upp docs`
 
@@ -45,33 +62,6 @@ USAGE
 ```
 
 _See code: [src/commands/docs.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/docs.ts)_
-
-## `upp heee [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ upp heee [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-```
-
-_See code: [src/commands/heee.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/heee.ts)_
-
-## `upp hello [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ upp hello [FILE]
-```
-
-_See code: [src/commands/hello.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/hello.ts)_
 
 ## `upp help [COMMAND]`
 
@@ -88,51 +78,37 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.3/src/commands/help.ts)_
+
+## `upp init`
+
+initializes upptime
+
+```
+USAGE
+  $ upp init
+```
+
+_See code: [src/commands/init.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/init.ts)_
 
 ## `upp run [ITERATIONS]`
-## `upp init [FILE]`
 
 Run workflows
 
 ```
 USAGE
   $ upp run [ITERATIONS]
-  $ upp init [FILE]
 
 OPTIONS
-  -S, --setup
   -g, --graphs
   -h, --help                   show CLI help
   -i, --iterations=iterations  number of iterations
-  -p, --pages
+  -p, --staticSite
   -s, --summary
   -u, --uptime
 ```
 
 _See code: [src/commands/run.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/run.ts)_
-
-## `upp status`
-
-updates about status of websites
-
-```
-USAGE
-  $ upp status
-```
-
-_See code: [src/commands/init.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/init.ts)_
-
-## `upp status`
-
-updates about status of websites
-
-```
-USAGE
-  $ upp status
-```
-
-_See code: [src/commands/init.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/init.ts)_
 
 ## `upp status`
 
