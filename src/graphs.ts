@@ -6,6 +6,8 @@ import {infoErrorLogger} from './helpers/log'
 import {getHistoryItems} from './helpers/calculate-response-time'
 import dayjs from 'dayjs'
 import {ChartJSNodeCanvas} from 'chartjs-node-canvas'
+import {cli} from 'cli-ux'
+import chalk from 'chalk'
 
 const canvasRenderService = new ChartJSNodeCanvas({width: 600, height: 400})
 const chartOptions = {
@@ -29,6 +31,7 @@ const chartOptions = {
 }
 
 export const generateGraphs = async () => {
+  cli.action.start('Running graphs workflow')
   infoErrorLogger.info('Generate Graphs')
   const config = await getConfig()
 
@@ -113,4 +116,5 @@ export const generateGraphs = async () => {
       })
     )
   }
+  cli.action.stop(chalk.green('done'))
 }

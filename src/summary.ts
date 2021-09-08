@@ -12,8 +12,11 @@ import {parseURL} from 'whatwg-url'
 import {getResponseTimeColor, getUptimeColor} from './helpers/get-badge-color'
 import {existsSync} from 'fs-extra'
 import {infoErrorLogger} from './helpers/log'
+import {cli} from 'cli-ux'
+import chalk from 'chalk'
 
 export const generateSummary = async () => {
+  cli.action.start('Running summary workflow')
   await mkdirp('history')
   const config = await getConfig()
   const i18n = config.i18n || {}
@@ -255,4 +258,5 @@ ${config.summaryEndHtmlComment || '<!--end: status pages-->'}${endText}`
   )
   if (config.commits?.provider && config.commits?.provider === 'GitHub')
     push()
+  cli.action.stop(chalk.green('done'))
 }
