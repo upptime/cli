@@ -12,10 +12,13 @@ import {ping} from './helpers/ping'
 import {curl} from './helpers/request'
 import {SiteHistory} from './interfaces'
 import {generateSummary} from './summary'
+import cli from 'cli-ux'
+import chalk from 'chalk'
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 export const update = async (shouldCommit = false) => {
 // !! DIFF:: not checking if the .yml is valid, missing shouldContinue()
+  cli.action.start(`Running ${shouldCommit ? 'response-time' : 'update'} workflow`)
   await mkdirp('history')
 
   const config = await getConfig()
@@ -195,10 +198,12 @@ generator: Upptime <https://github.com/upptime/upptime>
         infoErrorLogger.info(`Skipping commit, status is ${status}`)
       }
     } catch (error) {
+      cli.action.stop(chalk.red('error'))
       infoErrorLogger.error(`${error}`)
     }
   }
   if (config.commits?.provider && config.commits?.provider === 'GitHub')
     push()
+  cli.action.stop(chalk.green('done'))
   if (hasDelta) generateSummary()
 }
