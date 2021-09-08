@@ -35,7 +35,7 @@ async run() {
     schedule(cronSchedule, async () => queue.add(func))
   }
 
-  const noWorkflowFlags = !flags.uptime && !flags.summary && !flags.staticSite && !flags.iterations && !flags.graphs
+  const noWorkflowFlags = !flags.uptime && !flags.summary && !flags.staticSite && !flags.graphs
 
   // It would be desirable to execute each iteration of CI in a cycle
   if (flags.iterations) {
