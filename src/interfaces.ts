@@ -45,6 +45,9 @@ export interface UppConfig {
    pages?: {
       provider?: '';
    };
+   logs?: {
+      colors?: boolean;
+   };
    skipDescriptionUpdate?: boolean;
    skipTopicsUpdate?: boolean;
    skipPoweredByReadme?: boolean;

@@ -1,8 +1,8 @@
-import { Command } from '@oclif/command'
+import Command from '../base'
 import fs = require('fs')
-import { prompt } from 'enquirer'
+import {prompt} from 'enquirer'
 import chalk from 'chalk'
-import { execSync } from 'child_process'
+import {execSync} from 'child_process'
 
 export default class Init extends Command {
   static description = 'initializes upptime';
@@ -11,7 +11,7 @@ export default class Init extends Command {
     // user inputs for configuration
     function testForGit(this: any) {
       try {
-        return execSync('git rev-parse --is-inside-work-tree 2>/dev/null', { encoding: 'utf8' })
+        return execSync('git rev-parse --is-inside-work-tree 2>/dev/null', {encoding: 'utf8'})
       } catch (error) {
         this.log(error)
       }
@@ -21,6 +21,7 @@ export default class Init extends Command {
 
 down.log
 error.log
+degraded.log
 status.log
 info.log`
 

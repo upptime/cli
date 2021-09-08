@@ -1,4 +1,4 @@
-import { Command } from '@oclif/command'
+import Command from '../base'
 import { load } from 'js-yaml'
 import { readFile } from 'fs-extra'
 import { Incident } from '../interfaces'

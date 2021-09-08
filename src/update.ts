@@ -7,7 +7,7 @@ import {join} from 'path'
 import {getConfig} from './helpers/config'
 // import {replaceEnvironmentVariables} from './helpers/environment'
 import {commit, push} from './helpers/git'
-import {infoErrorLogger} from './helpers/log'
+import {infoErrorLogger, statusLogger} from './helpers/log'
 import {ping} from './helpers/ping'
 import {curl} from './helpers/request'
 import {SiteHistory} from './interfaces'
@@ -17,7 +17,7 @@ import chalk from 'chalk'
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 export const update = async (shouldCommit = false) => {
-// !! DIFF:: not checking if the .yml is valid, missing shouldContinue()
+  // !! DIFF:: not checking if the .yml is valid, missing shouldContinue()
   cli.action.start(`Running ${shouldCommit ? 'response-time' : 'update'} workflow`)
   await mkdirp('history')
 
@@ -166,25 +166,34 @@ startTime: ${startTime}
 generator: Upptime <https://github.com/upptime/upptime>
 `
         )
+        const commitMsg = (
+          (config.commitMessages || {}).statusChange ||
+          '$PREFIX $SITE_NAME is $STATUS ($RESPONSE_CODE in $RESPONSE_TIME ms) [skip ci] [upptime]'
+        )
+        .replace(
+          '$PREFIX',
+          status === 'up' ?
+            config.commitPrefixStatusUp || '🟩' :
+            status === 'degraded' ?
+              config.commitPrefixStatusDegraded || '🟨' :
+              config.commitPrefixStatusDown || '🟥'
+        )
+        .replace('$SITE_NAME', site.name)
+        .replace('$SITE_URL', site.url)
+        .replace('$SITE_METHOD', site.method || 'GET')
+        .replace('$STATUS', status)
+        .replace('$RESPONSE_CODE', result.httpCode.toString())
+        .replace('$RESPONSE_TIME', responseTime)
+
+        if (status === 'up')
+          statusLogger.up(commitMsg)
+        else if (status === 'degraded')
+          statusLogger.degraded(commitMsg)
+        else
+          statusLogger.down(commitMsg)
+
         commit(
-          (
-            (config.commitMessages || {}).statusChange ||
-            '$PREFIX $SITE_NAME is $STATUS ($RESPONSE_CODE in $RESPONSE_TIME ms) [skip ci] [upptime]'
-          )
-          .replace(
-            '$PREFIX',
-            status === 'up' ?
-              config.commitPrefixStatusUp || '🟩' :
-              status === 'degraded' ?
-                config.commitPrefixStatusDegraded || '🟨' :
-                config.commitPrefixStatusDown || '🟥'
-          )
-          .replace('$SITE_NAME', site.name)
-          .replace('$SITE_URL', site.url)
-          .replace('$SITE_METHOD', site.method || 'GET')
-          .replace('$STATUS', status)
-          .replace('$RESPONSE_CODE', result.httpCode.toString())
-          .replace('$RESPONSE_TIME', responseTime),
+          commitMsg,
           (config.commitMessages || {}).commitAuthorName,
           (config.commitMessages || {}).commitAuthorEmail
         )

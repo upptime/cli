@@ -1,5 +1,6 @@
 /* eslint-disable complexity */
-import {Command, flags} from '@oclif/command'
+import {flags} from '@oclif/command'
+import Command from '../base'
 import {schedule} from 'node-cron'
 import PQueue from 'p-queue'
 import {generateGraphs} from '../graphs'
