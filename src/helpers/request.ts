@@ -1,8 +1,8 @@
-import {debug} from 'console'
 import {Curl, CurlFeature} from 'node-libcurl'
 import {UppConfig} from '../interfaces'
 import {join} from 'path'
 import {writeFileSync} from 'fs-extra'
+import {infoErrorLogger} from './log'
 const tls = require('tls')
 
 export const curl = (site: UppConfig['sites'][0]):
@@ -36,7 +36,7 @@ Promise<{httpCode: number; totalTime: number; data: string}> => new Promise(reso
   curl.setOpt('CUSTOMREQUEST', method)
   curl.on('error', (error: any) => {
     curl.close()
-    debug('Got an error (on error)', error)
+    infoErrorLogger.error('Got an error (on error)', error)
     return resolve({httpCode: 0, totalTime: 0, data: ''})
   })
   curl.on('end', (_: any, data: any) => {
@@ -48,10 +48,10 @@ Promise<{httpCode: number; totalTime: number; data: string}> => new Promise(reso
       totalTime = Number(curl.getInfo('TOTAL_TIME'))
     } catch (error) {
       curl.close()
-      debug('Got an error (on end)', error)
+      infoErrorLogger.error('Got an error (on end)', error)
       return resolve({httpCode, totalTime, data})
     }
-    if (httpCode === 0 || totalTime === 0) debug('Didn\'t get an error but got 0s')
+    if (httpCode === 0 || totalTime === 0) infoErrorLogger.error('Didn\'t get an error but got 0s')
     return resolve({httpCode, totalTime, data})
   })
   curl.perform()

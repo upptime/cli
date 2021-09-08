@@ -1,4 +1,4 @@
-import {Command} from '@oclif/command'
+import Command from '../base'
 import cli from  'cli-ux'
 export default class Docs extends Command {
   static description = 'redirects to Upptime docs'

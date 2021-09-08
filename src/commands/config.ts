@@ -1,4 +1,4 @@
-import { Command } from '@oclif/command'
+import Command from '../base'
 import chalk from 'chalk'
 import child_process from 'child_process'
 
