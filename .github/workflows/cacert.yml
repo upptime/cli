@@ -27,7 +27,7 @@ jobs:
           git config --local user.name "Upptime Bot"
           git commit -m ":arrow_up: update CACERT"
       - name: Push changes
-        if: job.steps.commit.outcome 
+        if: steps.commit.outcome == 'success' 
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GH_PAT }}
