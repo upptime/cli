@@ -19,12 +19,15 @@ jobs:
         run: |
           curl --remote-name --time-cond cacert.pem https://curl.se/ca/cacert.pem
       - name: Stage and commit changes
+        id: commit
+        continue-on-error: true
         run: |
           git add .
           git config --local user.email "73812536+upptime-bot@users.noreply.github.com"
           git config --local user.name "Upptime Bot"
           git commit -m ":arrow_up: update CACERT"
       - name: Push changes
+        if: job.steps.commit.outcome 
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GH_PAT }}
