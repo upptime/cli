@@ -1,4 +1,5 @@
 export interface UppConfig {
+   assignees: string[];
    sites: {
       check?: 'http' | 'tcp-ping';
       method?: string;
@@ -48,6 +49,9 @@ export interface UppConfig {
    logs?: {
       colors?: boolean;
    };
+   incidentCommitPrefixOpen?: string;
+   incidentCommitPrefixClose?: string;
+   skipDeleteIssues?: boolean;
    skipDescriptionUpdate?: boolean;
    skipTopicsUpdate?: boolean;
    skipPoweredByReadme?: boolean;
@@ -143,15 +147,18 @@ export interface DownPecentages {
 export interface Incidents {
    [slug: string]: {
       name: string;
-      url: string;
+      url?: string;
       useID: number;
       incidents: Incident[];
    };
 }
 export interface Incident {
    id: number;
+   labels: string[] | undefined;
+   title: string;
    createdAt: number;
    closedAt?: number;
    willCloseAt?: number;
+   url?: string;
    status: 'open' | 'closed';
 }

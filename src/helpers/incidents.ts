@@ -1,12 +1,18 @@
 import {dump, load} from 'js-yaml'
-import {readFile, writeFile, ensureFile} from 'fs-extra'
+import {readFile, writeFile, ensureFile, appendFile} from 'fs-extra'
 import path, {join} from 'path'
-import {Incidents, UppConfig} from '../interfaces'
+import {Incident, Incidents, UppConfig} from '../interfaces'
 import slugify from '@sindresorhus/slugify'
+import { debug } from 'winston'
 
 let __incident: Incidents | undefined
 
+const initIncidents = async (): Promise<void> => {
+  await ensureFile('incidents.yml')
+}
+
 export const getIncidents = async (): Promise<Incidents> => {
+  await initIncidents()
   if (__incident) return __incident
   const incident = load(await readFile(join('.', 'incidents.yml'), 'utf8')) as Incidents
   __incident = incident
@@ -14,8 +20,10 @@ export const getIncidents = async (): Promise<Incidents> => {
 }
 
 export const incidentsForSlugExists =  async (slug: string, name: string, url: string) => {
-  await ensureFile('incidents.yml')
-  const incidents = await getIncidents()
+  await initIncidents()
+  let incidents = await getIncidents()
+  if (!incidents)
+    incidents = {} as Incidents
   if (!incidents[slug]) {
     incidents[slug] = {
       name,
@@ -28,18 +36,22 @@ export const incidentsForSlugExists =  async (slug: string, name: string, url: s
   __incident = incidents
 }
 
-export const createIncident = async (title: string, desc: string, willCloseAt: number|undefined, author: string, site: UppConfig['sites'][0]): Promise<void> => {
+export const createIncident = async (site: UppConfig['sites'][0], meta: {willCloseAt?: number; author: string; assignees: string[]; labels: string[]}, title: string, desc: string): Promise<void> => {
   const slug = site.slug ?? slugify(site.name)
   await incidentsForSlugExists(site.name, slug, site.url)
   const incidents = await getIncidents()
+  debug(incidents[slug].incidents.toString())
+  debug(incidents[slug].name)
   const id = incidents[slug].useID
   const now = Date.now()
   // write to incidents.yml
   incidents[slug].incidents.unshift({
     id,
     createdAt: now,
-    willCloseAt: willCloseAt,
+    willCloseAt: meta.willCloseAt,
     status: 'open',
+    title,
+    labels: meta.labels,
   })
   incidents[slug].useID = id + 1
   __incident = incidents
@@ -50,34 +62,58 @@ export const createIncident = async (title: string, desc: string, willCloseAt: n
   await ensureFile(mdPath)
   const content = `---
 id: ${id}
-labels: ${slug}
-assignees: ${site.assignees?.join(', ')}
+assignees: ${meta.assignees?.join(', ')}
 ---
 # ${title}
 
-<!--start:commment:0 author:${author} last_modified:${now}-->
+<!--start:commment author:${meta.author} last_modified:${now}-->
 ${desc}
-<!--end:comment:0 -->
+<!--end:comment -->
 ---
 `
   await writeFile(mdPath, content)
 }
 
-export const closeMaintenanceIncidents = async (slug: string) => {
+export const closeMaintenanceIncidents = async () => {
+  // Slug is not needed as a parameter, since newly added site will not have any issue
+  // if it does, it must already be in incidents.yml
   const incidents = await getIncidents()
   const now = Date.now()
-  incidents[slug].incidents.filter(incident => {
-    if (incident.status === 'open' &&  incident.willCloseAt && incident.willCloseAt < now)
-      return true
-    return false
-  })
+  const ongoingMaintenanceEvents: {incident: Incident; slug: string}[] = []
+  if (incidents)
+    Object.keys(incidents).forEach(slug => {
+      incidents[slug].incidents.map(incident => {
+        if (incident.labels?.includes('maintenance') &&  incident.willCloseAt && incident.willCloseAt < now) {
+          ongoingMaintenanceEvents.push({
+            incident,
+            slug,
+          })
+          incident.status = 'closed'
+        }
+        return incident
+      })
+    })
+  await writeFile('.incidents.yml', dump(incidents))
+  __incident = incidents
+  return ongoingMaintenanceEvents
 }
 
 export const closeIncident = async (slug: string, id: number) => {
   const incidents = await getIncidents()
-  const incident = incidents[slug].incidents[id]
-  incident.closedAt = Date.now()
-  incident.status = 'closed'
+  const index = incidents[slug].incidents.findIndex(i => i.id === id)
+  incidents[slug].incidents[index].closedAt = Date.now()
+  incidents[slug].incidents[index].status = 'closed'
   __incident = incidents
   await writeFile('incidents.yml', dump(incidents))
+}
+
+export const createComment = async (meta: {slug: string; id: number; title: string; author: string}, comment: string) => {
+  const filePath = path.join('incidents', meta.slug, `${meta.id}-${meta.title}`)
+  await appendFile(filePath, `
+<!--start:commment author:${meta.author} last_modified:${Date.now()}-->
+${comment}
+<!--end:comment --> 
+
+---
+`)
 }
