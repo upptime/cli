@@ -140,10 +140,18 @@ export interface DownPecentages {
    all: string;
    dailyMinutesDown: Record<string, number>;
 }
-export interface Incident {
-   incidents: {
+export interface Incidents {
+   [slug: string]: {
       name: string;
       url: string;
-      timestamp: string;
-   }[];
+      useID: number;
+      incidents: Incident[];
+   };
+}
+export interface Incident {
+   id: number;
+   createdAt: number;
+   closedAt?: number;
+   willCloseAt?: number;
+   status: 'open' | 'closed';
 }
