@@ -3,7 +3,6 @@ import {readFile, writeFile, ensureFile, appendFile} from 'fs-extra'
 import path, {join} from 'path'
 import {Incident, Incidents, UppConfig} from '../interfaces'
 import slugify from '@sindresorhus/slugify'
-import { debug } from 'winston'
 
 let __incident: Incidents | undefined
 
@@ -38,10 +37,8 @@ export const incidentsForSlugExists =  async (slug: string, name: string, url: s
 
 export const createIncident = async (site: UppConfig['sites'][0], meta: {willCloseAt?: number; author: string; assignees: string[]; labels: string[]}, title: string, desc: string): Promise<void> => {
   const slug = site.slug ?? slugify(site.name)
-  await incidentsForSlugExists(site.name, slug, site.url)
+  await incidentsForSlugExists(slug, site.name, site.url)
   const incidents = await getIncidents()
-  debug(incidents[slug].incidents.toString())
-  debug(incidents[slug].name)
   const id = incidents[slug].useID
   const now = Date.now()
   // write to incidents.yml
@@ -58,11 +55,12 @@ export const createIncident = async (site: UppConfig['sites'][0], meta: {willClo
   await writeFile('incidents.yml', dump(incidents))
 
   // write to incidents/slugified-site-folder/$id-$title.md
-  const mdPath = path.join('incidents', slug, `${id}-${title}`)
+  const mdPath = path.join('incidents', slug, `${id}-${title}.md`)
   await ensureFile(mdPath)
   const content = `---
 id: ${id}
 assignees: ${meta.assignees?.join(', ')}
+labels: ${meta.labels.join(', ')}
 ---
 # ${title}
 
@@ -93,7 +91,7 @@ export const closeMaintenanceIncidents = async () => {
         return incident
       })
     })
-  await writeFile('.incidents.yml', dump(incidents))
+  await writeFile('incidents.yml', dump(incidents))
   __incident = incidents
   return ongoingMaintenanceEvents
 }
@@ -108,7 +106,7 @@ export const closeIncident = async (slug: string, id: number) => {
 }
 
 export const createComment = async (meta: {slug: string; id: number; title: string; author: string}, comment: string) => {
-  const filePath = path.join('incidents', meta.slug, `${meta.id}-${meta.title}`)
+  const filePath = path.join('incidents', meta.slug, `${meta.id}-${meta.title}.md`)
   await appendFile(filePath, `
 <!--start:commment author:${meta.author} last_modified:${Date.now()}-->
 ${comment}
