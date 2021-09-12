@@ -23,7 +23,7 @@ export const commit = (
   message: string,
   name: string | undefined,
   email: string | undefined,
-  files: string | undefined,
+  files?: string,
 ) => {
   const {currName: prevName, currEmail: prevEmail} = _getNameAndEmail()
   _setNameAndEmail(name, email)
