@@ -22,11 +22,12 @@ const _setNameAndEmail = (
 export const commit = (
   message: string,
   name: string | undefined,
-  email: string | undefined
+  email: string | undefined,
+  files: string | undefined,
 ) => {
   const {currName: prevName, currEmail: prevEmail} = _getNameAndEmail()
   _setNameAndEmail(name, email)
-  exec('git add .')
+  exec(`git add ${files ?? '.'}`)
   infoErrorLogger.info(
     exec(`git commit -m "${message.replace(/"/g, "''")}"`, {silent: true})
     .stdout
