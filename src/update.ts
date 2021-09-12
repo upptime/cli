@@ -16,7 +16,6 @@ import {generateSummary} from './summary'
 import cli from 'cli-ux'
 import chalk from 'chalk'
 import {closeIncident, closeMaintenanceIncidents, createComment, createIncident, getIncidents} from './helpers/incidents'
-import { debug } from 'console'
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 export const update = async (shouldCommit = false) => {
@@ -212,7 +211,6 @@ generator: Upptime <https://github.com/upptime/upptime>
         } else {
           infoErrorLogger.info(`Status is different ${currentStatus} to ${status}`)
           hasDelta = true
-          debug('Here')
           let issueCommitMessage = ''
           const lastCommitSha = lastCommit()
           const maintenanceIssueExists = ongoingMaintenanceEvents.find(i => i.slug)
@@ -223,13 +221,10 @@ generator: Upptime <https://github.com/upptime/upptime>
             (status === 'degraded' && maintenanceIssueExists)
           )
             expected = true
-          debug('here - 1.5')
           const issueAlreadyExistsIndex = incidents && incidents[slug] ? incidents[slug].incidents.findIndex(i => i.status === 'open' && i.labels?.includes(slug)) : -1
           // If the site was just recorded as down or degraded, open an issue
-          debug('here - 2')
           if ((status === 'down' || status === 'degraded') && !expected) {
             if (issueAlreadyExistsIndex === -1) {
-              debug('here-3')
               createIncident(site, {
                 assignees: [...(config.assignees || []), ...(site.assignees || [])],
                 author: 'Upptime Bot',
@@ -263,7 +258,6 @@ generator: Upptime <https://github.com/upptime/upptime>
               infoErrorLogger.info('An issue is already open for this')
             }
           } else if (issueAlreadyExistsIndex > -1) {
-            debug('here-4')
             // If the site just came back up
             const incident = incidents[slug].incidents[issueAlreadyExistsIndex]
             const title = incident.title
