@@ -55,7 +55,7 @@ export const createIncident = async (site: UppConfig['sites'][0], meta: {willClo
   await writeFile('incidents.yml', dump(incidents))
 
   // write to incidents/slugified-site-folder/$id-$title.md
-  const mdPath = path.join('incidents', slug, `${id}-${title}.md`)
+  const mdPath = path.join('incidents', slug, `${title}#${id}.md`)
   await ensureFile(mdPath)
   const content = `---
 id: ${id}
@@ -106,7 +106,7 @@ export const closeIncident = async (slug: string, id: number) => {
 }
 
 export const createComment = async (meta: {slug: string; id: number; title: string; author: string}, comment: string) => {
-  const filePath = path.join('incidents', meta.slug, `${meta.id}-${meta.title}.md`)
+  const filePath = path.join('incidents', meta.slug, `${meta.title}#${meta.id}.md`)
   await appendFile(filePath, `
 <!--start:commment author:${meta.author} last_modified:${Date.now()}-->
 ${comment}
