@@ -20,7 +20,7 @@ export default class Incidents extends Command {
           },
           url: {
             header: 'Issue URL',
-            minWidth: 7,
+            minWidth: 10,
             get: row => row.url ?? '-',
           },
           status: {
@@ -30,16 +30,18 @@ export default class Incidents extends Command {
           },
           createdAt: {
             header: 'Created At',
-            minWidth: 6,
+            minWidth: 10,
+            get: row => new Date(row.createdAt).toLocaleString(),
           },
           closedAt: {
-            header: 'Created At',
-            minWidth: 6,
+            header: 'Closed At',
+            minWidth: 10,
             get: row => row.closedAt ?? '-',
           },
         }, {
           printLine: this.log,
         })
+        this.log()
       })
     } catch (error) {
       this.log(chalk.bgYellow('No incidents as of now.'))
