@@ -19,7 +19,7 @@ export const getIncidents = async (): Promise<MemoizedIncidents> => {
   if (!incidents) {
     incidents = {
       useID: 1,
-      incidents: [],
+      incidents: {},
     } as Incidents
     await writeFile('.incidents.yml', dump(incidents))
   }
