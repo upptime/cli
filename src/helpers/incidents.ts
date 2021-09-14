@@ -3,6 +3,9 @@ import {readFile, ensureFile, appendFile, writeFile} from 'fs-extra'
 import path from 'path'
 import {Incidents, MemoizedIncidents, UppConfig} from '../interfaces'
 import slugify from '@sindresorhus/slugify'
+import {commit} from './git'
+import {getConfig} from './config'
+import {infoErrorLogger} from './log'
 
 let __memoizedIncidents: MemoizedIncidents | undefined
 
@@ -22,6 +25,13 @@ export const getIncidents = async (): Promise<MemoizedIncidents> => {
       incidents: {},
     } as Incidents
     await writeFile('.incidents.yml', dump(incidents))
+
+    const config = await getConfig()
+    commit('$PREFIX Create incidents.yml'
+    .replace('$PREFIX', config.incidentCommitPrefixOpen || '⭕'),
+    (config.commitMessages || {}).commitAuthorName,
+    (config.commitMessages || {}).commitAuthorEmail,
+    '.incidents.yml')
   }
   /** __memoizedIncidents is already initialized */
   __memoizedIncidents = {...incidents, indexes: {}}
@@ -84,6 +94,14 @@ ${desc}
 ---
 `
   await writeFile(mdPath, content)
+  const config = await getConfig()
+  infoErrorLogger.info(`.incidents.yml ${mdPath}`)
+  commit('$PREFIX Create Issue #$ID'
+  .replace('$PREFIX', config.incidentCommitPrefixOpen || '⭕')
+  .replace('$ID', id.toString(10)),
+  (config.commitMessages || {}).commitAuthorName,
+  (config.commitMessages || {}).commitAuthorEmail,
+  `.incidents.yml "${mdPath}"`)
 }
 
 export const closeMaintenanceIncidents = async () => {
@@ -93,6 +111,7 @@ export const closeMaintenanceIncidents = async () => {
   const now = Date.now()
   const ongoingMaintenanceEvents: {incident: Incidents['incidents']['0']; id: number}[] = []
   const indexes = await getIndexes('maintenance')
+  let hasDelta = false
   indexes.forEach(id => {
     const status = __memoizedIncidents!.incidents[id].status
     if (status === 'open') {
@@ -100,6 +119,7 @@ export const closeMaintenanceIncidents = async () => {
       if (willCloseAt && willCloseAt < now) {
         __memoizedIncidents!.incidents[id].closedAt = now
         __memoizedIncidents!.incidents[id].status = 'closed'
+        hasDelta = true
       }
       ongoingMaintenanceEvents.push({
         id: id,
@@ -107,11 +127,18 @@ export const closeMaintenanceIncidents = async () => {
       })
     }
   })
+  if (hasDelta) {
+    await writeFile('.incidents.yml', dump({
+      useID: __memoizedIncidents?.useID,
+      incidents: __memoizedIncidents?.incidents,
+    }))
+    // Commit changes
+    const config = await getConfig()
+    commit('$PREFIX Close maintenance issues'.replace('$PREFIX', config.incidentCommitPrefixClose || '📛'),
+      (config.commitMessages || {}).commitAuthorName,
+      (config.commitMessages || {}).commitAuthorEmail, '.incidents.yml')
+  }
 
-  await writeFile('.incidents.yml', dump({
-    useID: __memoizedIncidents?.useID,
-    incidents: __memoizedIncidents?.incidents,
-  }))
   return ongoingMaintenanceEvents
 }
 
@@ -123,6 +150,12 @@ export const closeIncident = async (id: number) => {
     useID: __memoizedIncidents?.useID,
     incidents: __memoizedIncidents?.incidents,
   }))
+  const config = await getConfig()
+  commit('$PREFIX Close #$ID'
+  .replace('$PREFIX', config.incidentCommitPrefixClose || '📛')
+  .replace('$ID', id.toString(10)),
+  (config.commitMessages || {}).commitAuthorName,
+  (config.commitMessages || {}).commitAuthorEmail, '.incidents.yml')
 }
 
 export const createComment = async (meta: {slug: string; id: number; title: string; author: string}, comment: string) => {
@@ -134,4 +167,12 @@ ${comment}
 
 ---
 `)
+  const config = await getConfig()
+  commit('$PREFIX Comment in #$ID by $AUTHOR'
+  .replace('$PREFIX', config.incidentCommentPrefix || '💬')
+  .replace('$AUTHOR', meta.author)
+  .replace('$ID', meta.id.toString(10)),
+  (config.commitMessages || {}).commitAuthorName,
+  (config.commitMessages || {}).commitAuthorEmail,
+  `"${filePath}"`)
 }

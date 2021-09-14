@@ -51,6 +51,7 @@ export interface UppConfig {
    };
    incidentCommitPrefixOpen?: string;
    incidentCommitPrefixClose?: string;
+   incidentCommentPrefix?: string;
    skipDeleteIssues?: boolean;
    skipDescriptionUpdate?: boolean;
    skipTopicsUpdate?: boolean;

@@ -28,9 +28,6 @@ export const update = async (shouldCommit = false) => {
 
   // close maintenance issues
   const ongoingMaintenanceEvents = await closeMaintenanceIncidents()
-  commit('$PREFIX Maintanence issues closed'.replace('$PREFIX', config.incidentCommitPrefixClose || '📛'),
-    (config.commitMessages || {}).commitAuthorName,
-    (config.commitMessages || {}).commitAuthorEmail)
 
   for await (const site of config.sites) {
     infoErrorLogger.info(`Checking ${site.url}`)
@@ -210,7 +207,6 @@ generator: Upptime <https://github.com/upptime/upptime>
         } else {
           infoErrorLogger.info(`Status is different ${currentStatus} to ${status}`)
           hasDelta = true
-          let issueCommitMessage = ''
           const lastCommitSha = lastCommit()
           const maintenanceIssueExists = ongoingMaintenanceEvents.find(i => i.incident.slug)
           // Don't create an issue if it's expected that the site is down or degraded
@@ -233,18 +229,16 @@ generator: Upptime <https://github.com/upptime/upptime>
               }, status === 'down' ?
                 `🛑 ${site.name} is down` :
                 `⚠️ ${site.name} has degraded performance`
-              , `In [\`${lastCommitSha.substr(
+              , `In \`${lastCommitSha.substr(
                 0,
                 7
-              )}\`], ${site.name} (${
+              )}\`, ${site.name} (${
                 site.url
               }) ${status === 'down' ? 'was **down**' : 'experienced **degraded performance**'}:
 - HTTP code: ${result.httpCode}
 - Response time: ${responseTime} ms
 `)
               infoErrorLogger.info('Opened and locked a new issue')
-              issueCommitMessage = '$PREFIX Open issue for $SITE - $STATUS [upptime]'
-              .replace('$PREFIX', config.incidentCommitPrefixOpen || '📌')
               try {
                 // TODO: Add notifications func
                 // await sendNotification(
@@ -273,16 +267,14 @@ generator: Upptime <https://github.com/upptime/upptime>
                 title.includes('degraded') ?
                   'performance has improved' :
                   'is back up'
-              } in [\`${lastCommitSha.substr(
+              } in \`${lastCommitSha.substr(
                 0,
                 7
-              )}\`].`
+              )}\`.`
             )
             infoErrorLogger.info('Created comment in issue')
             await closeIncident(issueAlreadyExistsIndex)
             infoErrorLogger.info('Closed issue')
-            issueCommitMessage = '$PREFIX Close Issue for $SITE - $STATUS'
-            .replace('$PREFIX', config.incidentCommitPrefixClose || '📛')
             try {
               // TODO: Add notifications func
               // await sendNotification(
@@ -298,10 +290,6 @@ generator: Upptime <https://github.com/upptime/upptime>
           } else {
             infoErrorLogger.info('Could not find a relevant issue')
           }
-          issueCommitMessage === '' ? {} :
-            commit(issueCommitMessage.replace('$SITE', site.url).replace('$STATUS', status),
-              (config.commitMessages || {}).commitAuthorName,
-              (config.commitMessages || {}).commitAuthorEmail)
         }
       } else {
         infoErrorLogger.info(`Skipping commit, status is ${status}`)
