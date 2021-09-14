@@ -15,7 +15,7 @@ import {SiteHistory} from './interfaces'
 import {generateSummary} from './summary'
 import cli from 'cli-ux'
 import chalk from 'chalk'
-import {closeIncident, closeMaintenanceIncidents, createComment, createIncident, getIncidents} from './helpers/incidents'
+import {closeIncident, closeMaintenanceIncidents, createComment, createIncident, getIncidents, getIndexes} from './helpers/incidents'
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 export const update = async (shouldCommit = false) => {
@@ -27,7 +27,6 @@ export const update = async (shouldCommit = false) => {
   let hasDelta = false
 
   // close maintenance issues
-  const incidents = await getIncidents()
   const ongoingMaintenanceEvents = await closeMaintenanceIncidents()
   commit('$PREFIX Maintanence issues closed'.replace('$PREFIX', config.incidentCommitPrefixClose || '📛'),
     (config.commitMessages || {}).commitAuthorName,
@@ -213,7 +212,7 @@ generator: Upptime <https://github.com/upptime/upptime>
           hasDelta = true
           let issueCommitMessage = ''
           const lastCommitSha = lastCommit()
-          const maintenanceIssueExists = ongoingMaintenanceEvents.find(i => i.slug)
+          const maintenanceIssueExists = ongoingMaintenanceEvents.find(i => i.incident.slug)
           // Don't create an issue if it's expected that the site is down or degraded
           let expected = false
           if (
@@ -221,10 +220,12 @@ generator: Upptime <https://github.com/upptime/upptime>
             (status === 'degraded' && maintenanceIssueExists)
           )
             expected = true
-          const issueAlreadyExistsIndex = incidents && incidents[slug] ? incidents[slug].incidents.findIndex(i => i.status === 'open' && i.labels?.includes(slug)) : -1
+          const incidents = await getIncidents()
+          const issueAlreadyExistsIndex = (await getIndexes(slug)).find(id => incidents.incidents[id].status === 'open')
+
           // If the site was just recorded as down or degraded, open an issue
           if ((status === 'down' || status === 'degraded') && !expected) {
-            if (issueAlreadyExistsIndex === -1) {
+            if (issueAlreadyExistsIndex === undefined) {
               createIncident(site, {
                 assignees: [...(config.assignees || []), ...(site.assignees || [])],
                 author: 'Upptime Bot',
@@ -257,14 +258,14 @@ generator: Upptime <https://github.com/upptime/upptime>
             } else {
               infoErrorLogger.info('An issue is already open for this')
             }
-          } else if (issueAlreadyExistsIndex > -1) {
+          } else if (issueAlreadyExistsIndex) {
             // If the site just came back up
-            const incident = incidents[slug].incidents[issueAlreadyExistsIndex]
+            const incident = incidents.incidents[issueAlreadyExistsIndex]
             const title = incident.title
             await createComment(
               {
                 author: 'Upptime Bot',
-                id: incident.id,
+                id: issueAlreadyExistsIndex,
                 slug,
                 title,
               },
@@ -278,7 +279,7 @@ generator: Upptime <https://github.com/upptime/upptime>
               )}\`].`
             )
             infoErrorLogger.info('Created comment in issue')
-            await closeIncident(slug, incident.id)
+            await closeIncident(issueAlreadyExistsIndex)
             infoErrorLogger.info('Closed issue')
             issueCommitMessage = '$PREFIX Close Issue for $SITE - $STATUS'
             .replace('$PREFIX', config.incidentCommitPrefixClose || '📛')
@@ -306,7 +307,6 @@ generator: Upptime <https://github.com/upptime/upptime>
         infoErrorLogger.info(`Skipping commit, status is ${status}`)
       }
     } catch (error) {
-      cli.action.stop(chalk.red('error'))
       infoErrorLogger.error(`${error}`)
     }
   }
