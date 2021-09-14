@@ -144,21 +144,29 @@ export interface DownPecentages {
    all: string;
    dailyMinutesDown: Record<string, number>;
 }
+
 export interface Incidents {
-   [slug: string]: {
-      name: string;
-      url?: string;
-      useID: number;
-      incidents: Incident[];
+   useID: number;
+   incidents: {
+      [id: number]: {
+         slug: string;
+         labels: string[] | undefined;
+         title: string;
+         createdAt: number;
+         closedAt?: number;
+         willCloseAt?: number;
+         siteURL?: string;
+         /** URL(if any) of where the issue is on the Internet */
+         url?: string;
+         status: 'open' | 'closed';
+      };
    };
 }
-export interface Incident {
-   id: number;
-   labels: string[] | undefined;
-   title: string;
-   createdAt: number;
-   closedAt?: number;
-   willCloseAt?: number;
-   url?: string;
-   status: 'open' | 'closed';
+
+export interface MemoizedIncidents {
+   useID: number;
+   incidents: Incidents['incidents'];
+   indexes: {
+      [slug: string]: number[];
+   };
 }
