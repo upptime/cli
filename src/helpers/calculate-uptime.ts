@@ -1,8 +1,10 @@
+import dayjs from 'dayjs'
 import {readFile} from 'fs-extra'
 import {load} from 'js-yaml'
 import {join} from 'path'
 import {DownPecentages, Downtimes, SiteHistory} from '../interfaces'
-import {infoErrorLogger} from './log'
+import {getIncidents, getIndexes} from './incidents'
+import {checkOverlap} from './overlap'
 
 /**
  * Get the number of seconds a website has been down
@@ -10,15 +12,61 @@ import {infoErrorLogger} from './log'
  */
 
 const getDowntimeSecondsForSite = async (slug: string): Promise<Downtimes> => {
-  const day = 0
-  const week = 0
-  const month = 0
-  const year = 0
-  const all = 0
+  let day = 0
+  let week = 0
+  let month = 0
+  let year = 0
+  let all = 0
   const dailyMinutesDown: Record<string, number> = {}
 
-  // TODO get issues and calculate downtimes
-  infoErrorLogger.info(`down time: ${slug}`)
+  // Get all the issues for this website
+  const incidents = await getIncidents()
+  const indexes = await getIndexes(slug)
+
+  // If this issue has been closed already, calculate the difference
+  // between when it was closed and when it was opened
+  // If this issue is still open, calculate the time since it was opened
+  indexes.forEach(id => {
+    const issue = incidents.incidents[id]
+    const issueDowntime =
+      new Date(issue.closedAt || new Date()).getTime() - new Date(issue.createdAt).getTime()
+    all += issueDowntime
+    const issueOverlap = {
+      start: new Date(issue.createdAt).getTime(),
+      end: new Date(issue.closedAt || new Date()).getTime(),
+    };
+
+    [...Array(365).keys()].forEach(day => {
+      const date = dayjs().subtract(day, 'day')
+      const overlap = checkOverlap(issueOverlap, {
+        start: date.startOf('day').toDate().getTime(),
+        end: date.endOf('day').toDate().getTime(),
+      })
+      if (overlap) {
+        dailyMinutesDown[date.format('YYYY-MM-DD')] =
+          dailyMinutesDown[date.format('YYYY-MM-DD')] || 0
+        dailyMinutesDown[date.format('YYYY-MM-DD')] += Math.round(overlap / 60000)
+      }
+    })
+
+    const end = dayjs().toDate().getTime()
+    day += checkOverlap(issueOverlap, {
+      start: dayjs().subtract(1, 'day').toDate().getTime(),
+      end,
+    })
+    week += checkOverlap(issueOverlap, {
+      start: dayjs().subtract(1, 'week').toDate().getTime(),
+      end,
+    })
+    month += checkOverlap(issueOverlap, {
+      start: dayjs().subtract(1, 'month').toDate().getTime(),
+      end,
+    })
+    year += checkOverlap(issueOverlap, {
+      start: dayjs().subtract(1, 'year').toDate().getTime(),
+      end,
+    })
+  })
 
   return {
     day: Math.round(day / 1000),
