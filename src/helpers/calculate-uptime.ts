@@ -36,7 +36,7 @@ const getDowntimeSecondsForSite = async (slug: string): Promise<Downtimes> => {
       end: new Date(issue.closedAt || new Date()).getTime(),
     };
 
-    [...Array(365).keys()].forEach(day => {
+    [...(new Array(365).keys())].forEach(day => {
       const date = dayjs().subtract(day, 'day')
       const overlap = checkOverlap(issueOverlap, {
         start: date.startOf('day').toDate().getTime(),
