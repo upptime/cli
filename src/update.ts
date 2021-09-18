@@ -16,6 +16,7 @@ import {generateSummary} from './summary'
 import cli from 'cli-ux'
 import chalk from 'chalk'
 import {closeIncident, closeMaintenanceIncidents, createComment, createIncident, getIncidents, getIndexes} from './helpers/incidents'
+import {sendNotification} from './helpers/notifme'
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 export const update = async (shouldCommit = false) => {
@@ -240,12 +241,11 @@ generator: Upptime <https://github.com/upptime/upptime>
 `)
               infoErrorLogger.info('Opened and locked a new issue')
               try {
-                // TODO: Add notifications func
-                // await sendNotification(
-                //   status === 'down' ?
-                //     `🟥 ${site.name} (${site.url}) is **down**` :
-                //     `🟨 ${site.name} (${site.url}) is experiencing **degraded performance**`
-                // )
+                await sendNotification(
+                  status === 'down' ?
+                    `🟥 ${site.name} (${site.url}) is **down**` :
+                    `🟨 ${site.name} (${site.url}) is experiencing **degraded performance**`
+                )
               } catch (error) {
                 infoErrorLogger.error(error)
               }
@@ -276,14 +276,13 @@ generator: Upptime <https://github.com/upptime/upptime>
             await closeIncident(issueAlreadyExistsIndex)
             infoErrorLogger.info('Closed issue')
             try {
-              // TODO: Add notifications func
-              // await sendNotification(
-              //   `🟩 ${site.name} (${site.url}) ${
-              //     issues.data[0].title.includes('degraded') ?
-              //       'performance has improved' :
-              //       'is back up'
-              //   }.`
-              // )
+              await sendNotification(
+                `🟩 ${site.name} (${site.url}) ${
+                  title.includes('degraded') ?
+                    'performance has improved' :
+                    'is back up'
+                }.`
+              )
             } catch (error) {
               infoErrorLogger.error(error)
             }

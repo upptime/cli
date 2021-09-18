@@ -49,6 +49,9 @@ export interface UppConfig {
    logs?: {
       colors?: boolean;
    };
+   notifications?: { type: string; [index: string]: string }[];
+   skipGeneratingWebsite: boolean;
+   customStatusWebsitePackage: string;
    incidentCommitPrefixOpen?: string;
    incidentCommitPrefixClose?: string;
    incidentCommentPrefix?: string;

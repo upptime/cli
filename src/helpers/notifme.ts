@@ -1,0 +1,248 @@
+import NotifmeSdk, {EmailProvider, SlackProvider, SmsProvider} from 'notifme-sdk'
+import axios from 'axios'
+import type {Channel} from 'notifme-sdk'
+import {replaceEnvironmentVariables} from './environment'
+import {getSecret} from './secrets'
+import {infoErrorLogger} from './log'
+
+const channels: {
+  email?: Channel<EmailProvider>;
+  sms?: Channel<SmsProvider>;
+  slack?: Channel<SlackProvider>;
+} = {}
+
+if (
+  getSecret('NOTIFICATION_EMAIL_SENDGRID') ||
+  getSecret('NOTIFICATION_EMAIL_SES') ||
+  getSecret('NOTIFICATION_EMAIL_SPARKPOST') ||
+  getSecret('NOTIFICATION_EMAIL_MAILGUN') ||
+  getSecret('NOTIFICATION_EMAIL_SMTP')
+) {
+  channels.email = {
+    providers: [],
+    multiProviderStrategy:
+      (getSecret('NOTIFICATION_EMAIL_STRATEGY') as 'fallback' | 'roundrobin' | 'no-fallback') ||
+      'roundrobin',
+  }
+
+  if (getSecret('NOTIFICATION_EMAIL_SENDGRID')) {
+    channels.email.providers.push({
+      type: 'sendgrid',
+      apiKey: getSecret('NOTIFICATION_EMAIL_SENDGRID_API_KEY') as string,
+    })
+  }
+  if (getSecret('NOTIFICATION_EMAIL_SES')) {
+    channels.email.providers.push({
+      type: 'ses',
+      region: getSecret('NOTIFICATION_EMAIL_SES_REGION') as string,
+      accessKeyId: getSecret('NOTIFICATION_EMAIL_SES_ACCESS_KEY_ID') as string,
+      secretAccessKey: getSecret('NOTIFICATION_EMAIL_SES_SECRET_ACCESS_KEY') as string,
+      sessionToken: getSecret('NOTIFICATION_EMAIL_SES_SESSION_TOKEN') as string,
+    })
+  }
+  if (getSecret('NOTIFICATION_EMAIL_SPARKPOST')) {
+    channels.email.providers.push({
+      type: 'sparkpost',
+      apiKey: getSecret('NOTIFICATION_EMAIL_SPARKPOST_API_KEY') as string,
+    })
+  }
+  if (getSecret('NOTIFICATION_EMAIL_MAILGUN')) {
+    channels.email.providers.push({
+      type: 'mailgun',
+      apiKey: getSecret('NOTIFICATION_EMAIL_MAILGUN_API_KEY') as string,
+      domainName: getSecret('NOTIFICATION_EMAIL_MAILGUN_DOMAIN_NAME') as string,
+    })
+  }
+  if (getSecret('NOTIFICATION_EMAIL_SMTP')) {
+    channels.email.providers.push({
+      type: 'smtp',
+      port: (getSecret('NOTIFICATION_EMAIL_SMTP_PORT') ?
+        parseInt(getSecret('NOTIFICATION_EMAIL_SMTP_PORT') || '', 10) :
+        587) as 587 | 25 | 465,
+      host: getSecret('NOTIFICATION_EMAIL_SMTP_HOST') as string,
+      auth: {
+        user: getSecret('NOTIFICATION_EMAIL_SMTP_USERNAME') as string,
+        pass: getSecret('NOTIFICATION_EMAIL_SMTP_PASSWORD') as string,
+      },
+    })
+  }
+}
+
+if (
+  getSecret('NOTIFICATION_SMS_46ELKS') ||
+  getSecret('NOTIFICATION_SMS_CALLR') ||
+  getSecret('NOTIFICATION_SMS_CLICKATELL') ||
+  getSecret('NOTIFICATION_SMS_INFOBIP') ||
+  getSecret('NOTIFICATION_SMS_NEXMO') ||
+  getSecret('NOTIFICATION_SMS_OVH') ||
+  getSecret('NOTIFICATION_SMS_PLIVO') ||
+  getSecret('NOTIFICATION_SMS_TWILIO')
+) {
+  channels.sms = {
+    providers: [],
+    multiProviderStrategy:
+      (getSecret('NOTIFICATION_SMS_STRATEGY') as 'fallback' | 'roundrobin' | 'no-fallback') ||
+      'roundrobin',
+  }
+  if (getSecret('NOTIFICATION_SMS_46ELKS')) {
+    channels.sms.providers.push({
+      type: '46elks',
+      apiUsername: getSecret('NOTIFICATION_SMS_46ELKS_API_USERNAME') as string,
+      apiPassword: getSecret('NOTIFICATION_SMS_46ELKS_API_PASSWORD') as string,
+    })
+  }
+  if (getSecret('NOTIFICATION_SMS_CALLR')) {
+    channels.sms.providers.push({
+      type: 'callr',
+      login: getSecret('NOTIFICATION_SMS_CALLR_LOGIN') as string,
+      password: getSecret('NOTIFICATION_SMS_CALLR_PASSWORD') as string,
+    })
+  }
+  if (getSecret('NOTIFICATION_SMS_CLICKATELL')) {
+    channels.sms.providers.push({
+      type: 'clickatell',
+      apiKey: getSecret('NOTIFICATION_SMS_CLICKATELL_API_KEY') as string,
+    })
+  }
+  if (getSecret('NOTIFICATION_SMS_INFOBIP')) {
+    channels.sms.providers.push({
+      type: 'infobip',
+      username: getSecret('NOTIFICATION_SMS_INFOBIP_USERNAME') as string,
+      password: getSecret('NOTIFICATION_SMS_INFOBIP_PASSWORD') as string,
+    })
+  }
+  if (getSecret('NOTIFICATION_SMS_NEXMO')) {
+    channels.sms.providers.push({
+      type: 'nexmo',
+      apiKey: getSecret('NOTIFICATION_SMS_NEXMO_API_KEY') as string,
+      apiSecret: getSecret('NOTIFICATION_SMS_NEXMO_API_SECRET') as string,
+    })
+  }
+  if (getSecret('NOTIFICATION_SMS_OVH')) {
+    channels.sms.providers.push({
+      type: 'ovh',
+      appKey: getSecret('NOTIFICATION_SMS_OVH_APP_KEY') as string,
+      appSecret: getSecret('NOTIFICATION_SMS_OVH_APP_SECRET') as string,
+      consumerKey: getSecret('NOTIFICATION_SMS_OVH_CONSUMER_KEY') as string,
+      account: getSecret('NOTIFICATION_SMS_OVH_ACCOUNT') as string,
+      host: getSecret('NOTIFICATION_SMS_OVH_HOST') as string,
+    })
+  }
+  if (getSecret('NOTIFICATION_SMS_PLIVO')) {
+    channels.sms.providers.push({
+      type: 'plivo',
+      authId: getSecret('NOTIFICATION_SMS_PLIVO_AUTH_ID') as string,
+      authToken: getSecret('NOTIFICATION_SMS_PLIVO_AUTH_TOKEN') as string,
+    })
+  }
+  if (getSecret('NOTIFICATION_SMS_TWILIO')) {
+    channels.sms.providers.push({
+      type: 'twilio',
+      accountSid: getSecret('NOTIFICATION_SMS_TWILIO_ACCOUNT_SID') as string,
+      authToken: getSecret('NOTIFICATION_SMS_TWILIO_AUTH_TOKEN') as string,
+    })
+  }
+}
+
+if (getSecret('NOTIFICATION_SLACK')) {
+  channels.slack = {
+    providers: [],
+    multiProviderStrategy:
+      (getSecret('NOTIFICATION_SLACK_STRATEGY') as 'fallback' | 'roundrobin' | 'no-fallback') ||
+      'roundrobin',
+  }
+
+  if (getSecret('NOTIFICATION_SLACK_WEBHOOK')) {
+    channels.slack.providers.push({
+      type: 'webhook',
+      webhookUrl: getSecret('NOTIFICATION_SLACK_WEBHOOK_URL') as string,
+    })
+  }
+}
+
+const notifier = new NotifmeSdk({
+  channels,
+})
+
+export const sendNotification = async (message: string) => {
+  infoErrorLogger.info(`Sending notification ${message}`)
+  message = replaceEnvironmentVariables(message)
+
+  if (channels.email) {
+    infoErrorLogger.info('Sending email')
+    try {
+      await notifier.send({
+        email: {
+          from: (getSecret('NOTIFICATION_EMAIL_FROM') || getSecret('NOTIFICATION_EMAIL')) as string,
+          to: (getSecret('NOTIFICATION_EMAIL_TO') || getSecret('NOTIFICATION_EMAIL')) as string,
+          subject: message,
+          html: message,
+        },
+      })
+      infoErrorLogger.info('Success email')
+    } catch (error) {
+      infoErrorLogger.error(`Got an error, email: ${error}`)
+    }
+    infoErrorLogger.info('Finished sending email')
+  }
+  if (channels.sms) {
+    infoErrorLogger.info('Sending SMS')
+    try {
+      await notifier.send({
+        sms: {
+          from: getSecret('NOTIFICATION_SMS_FROM') as string,
+          to: getSecret('NOTIFICATION_SMS_TO') as string,
+          text: message,
+        },
+      })
+      infoErrorLogger.info('Success SMS')
+    } catch (error) {
+      infoErrorLogger.info(`Got an error, sms: ${error}`)
+    }
+    infoErrorLogger.info('Finished sending SMS')
+  }
+  if (channels.slack) {
+    infoErrorLogger.info('Sending Slack')
+    try {
+      await notifier.send({
+        slack: {
+          text: message,
+        },
+      })
+      infoErrorLogger.info('Success Slack')
+    } catch (error) {
+      infoErrorLogger.info(`Got an error, slack: ${error}`)
+    }
+    infoErrorLogger.info('Finished sending Slack')
+  }
+  if (getSecret('NOTIFICATION_DISCORD_WEBHOOK_URL')) {
+    infoErrorLogger.info('Sending Discord')
+    try {
+      await axios.post(getSecret('NOTIFICATION_DISCORD_WEBHOOK_URL') as string, {
+        content: message,
+      })
+      infoErrorLogger.info('Success Discord')
+    } catch (error) {
+      infoErrorLogger.info(`Got an error, discord: ${error}`)
+    }
+    infoErrorLogger.info('Finished sending Discord')
+  }
+  if (getSecret('NOTIFICATION_TELEGRAM') && getSecret('NOTIFICATION_TELEGRAM_BOT_KEY')) {
+    infoErrorLogger.info('Sending Telegram')
+    try {
+      await axios.post(
+        `https://api.telegram.org/bot${getSecret('NOTIFICATION_TELEGRAM_BOT_KEY')}/sendMessage`,
+        {
+          parse_mode: 'Markdown',
+          disable_web_page_preview: true,
+          chat_id: getSecret('NOTIFICATION_TELEGRAM_CHAT_ID'),
+          text: message.replace(/_/g, '\\_'),
+        }
+      )
+      infoErrorLogger.info('Success Telegram')
+    } catch (error) {
+      infoErrorLogger.info(`Got an error, telegram: ${error}`)
+    }
+    infoErrorLogger.info('Finished sending Telegram')
+  }
+}
