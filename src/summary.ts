@@ -60,7 +60,7 @@ export const generateSummary = async () => {
 
     pageStatuses.push({
       name: site.name,
-      url: site.url,
+      url: site.urlSecretText || site.url,
       icon: site.icon || fallbackIcon,
       slug,
       status: responseTimes.currentStatus,

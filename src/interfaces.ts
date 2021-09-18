@@ -2,6 +2,7 @@ export interface UppConfig {
    assignees: string[];
    sites: {
       check?: 'http' | 'tcp-ping';
+      urlSecretText?: string;
       method?: string;
       name: string;
       url: string;
