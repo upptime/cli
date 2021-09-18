@@ -31,7 +31,7 @@ export const update = async (shouldCommit = false) => {
   const ongoingMaintenanceEvents = await closeMaintenanceIncidents()
 
   for await (const site of config.sites) {
-    infoErrorLogger.info(`Checking ${site.url}`)
+    infoErrorLogger.info(`Checking ${site.urlSecretText || site.url}`)
     const slug = site.slug || slugify(site.name)
     let currentStatus = 'unknown'
     let startTime = new Date()
@@ -163,7 +163,7 @@ export const update = async (shouldCommit = false) => {
       if (shouldCommit || currentStatus !== status) {
         await writeFile(
           join('.', 'history', `${slug}.yml`),
-          `url: ${site.url}
+          `url: ${site.urlSecretText || site.url}
 status: ${status}
 code: ${result.httpCode}
 responseTime: ${responseTime}
@@ -185,7 +185,7 @@ generator: Upptime <https://github.com/upptime/upptime>
               config.commitPrefixStatusDown || '🟥'
         )
         .replace('$SITE_NAME', site.name)
-        .replace('$SITE_URL', site.url)
+        .replace('$SITE_URL', site.urlSecretText || site.url)
         .replace('$SITE_METHOD', site.method || 'GET')
         .replace('$STATUS', status)
         .replace('$RESPONSE_CODE', result.httpCode.toString())
@@ -234,7 +234,7 @@ generator: Upptime <https://github.com/upptime/upptime>
                 0,
                 7
               )}\`, ${site.name} (${
-                site.url
+                site.urlSecretText || site.url
               }) ${status === 'down' ? 'was **down**' : 'experienced **degraded performance**'}:
 - HTTP code: ${result.httpCode}
 - Response time: ${responseTime} ms
@@ -243,8 +243,8 @@ generator: Upptime <https://github.com/upptime/upptime>
               try {
                 await sendNotification(
                   status === 'down' ?
-                    `🟥 ${site.name} (${site.url}) is **down**` :
-                    `🟨 ${site.name} (${site.url}) is experiencing **degraded performance**`
+                    `🟥 ${site.name} (${site.urlSecretText || site.url}) is **down**` :
+                    `🟨 ${site.name} (${site.urlSecretText || site.url}) is experiencing **degraded performance**`
                 )
               } catch (error) {
                 infoErrorLogger.error(error)
@@ -277,7 +277,7 @@ generator: Upptime <https://github.com/upptime/upptime>
             infoErrorLogger.info('Closed issue')
             try {
               await sendNotification(
-                `🟩 ${site.name} (${site.url}) ${
+                `🟩 ${site.name} (${site.urlSecretText || site.url}) ${
                   title.includes('degraded') ?
                     'performance has improved' :
                     'is back up'

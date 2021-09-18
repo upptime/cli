@@ -57,7 +57,7 @@ export const createIncident = async (site: UppConfig['sites'][0], meta: {willClo
   const now = Date.now()
   // write to .incidents.yml
   incidents.incidents[id] = {
-    siteURL: site.url,
+    siteURL: site.urlSecretText || site.url,
     slug: slug,
     createdAt: now,
     willCloseAt: meta.willCloseAt,
