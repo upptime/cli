@@ -28,7 +28,7 @@ static flags = {
 static args = [{name: 'iterations'}]
 
 async run() {
-  console.log("test run")
+  // console.log("test run")
   const {flags} = this.parse(Run)
   const queue = new PQueue({concurrency: 1})
   const config: UppConfig = await getConfig()
@@ -42,7 +42,7 @@ async run() {
   // It would be desirable to execute each iteration of CI in a cycle
   if (flags.iterations) {
     for (let i = 0; i < flags.iterations; i++) {
-      console.log("running for "+i+1+"th time")
+      console.log("running for "+i+1+"th iteration")
       if (flags.uptime)
         queue.add(update)
       if (flags.responseTime)
@@ -66,7 +66,7 @@ async run() {
     }
   } 
   else {
-    console.log("reached")
+    // console.log("reached")
     if (flags.uptime)
       returnWorkflows(update, config.workflowSchedule?.uptime ?? UPTIME_CI_SCHEDULE)
     if (flags.responseTime)
