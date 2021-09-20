@@ -2,3 +2,156 @@
  1 file changed, 2 insertions(+)
  create mode 100644 .incidents.yml
 
+2021-09-20T19:00:00.022Z info: Checking https://www.github.com
+2021-09-20T19:00:00.030Z info: Current status undefined unknown Tue Sep 21 2021 00:30:00 GMT+0530 (India Standard Time)
+2021-09-20T19:00:00.998Z info: Result from test 200 0.652514
+2021-09-20T19:00:02.691Z info: [main 5f5607e] 🟩 Github is up (200 in 653 ms) [skip ci] [upptime]
+ 2 files changed, 133 insertions(+), 125 deletions(-)
+ create mode 100644 history/github.yml
+ rewrite src/graphs.ts (89%)
+
+2021-09-20T19:00:03.039Z info: Status is different unknown to up
+2021-09-20T19:00:03.201Z info: Could not find a relevant issue
+2021-09-20T19:00:03.202Z info: Checking https://www.wikipedia.org
+2021-09-20T19:00:03.207Z info: Current status undefined unknown Tue Sep 21 2021 00:30:03 GMT+0530 (India Standard Time)
+2021-09-20T19:00:03.727Z info: Result from test 200 0.46883
+2021-09-20T19:00:05.244Z info: [main d9676ed] 🟩 Wikipedia is up (200 in 469 ms) [skip ci] [upptime]
+ 1 file changed, 7 insertions(+)
+ create mode 100644 history/wikipedia.yml
+
+2021-09-20T19:00:05.632Z info: Status is different unknown to up
+2021-09-20T19:00:05.832Z info: Could not find a relevant issue
+2021-09-20T19:00:05.832Z info: Checking https://www.google.com
+2021-09-20T19:00:05.836Z info: Current status undefined unknown Tue Sep 21 2021 00:30:05 GMT+0530 (India Standard Time)
+2021-09-20T19:00:06.148Z info: Result from test 200 0.310722
+2021-09-20T19:00:07.340Z info: [main 0870f3a] 🟩 Google is up (200 in 311 ms) [skip ci] [upptime]
+ 1 file changed, 7 insertions(+)
+ create mode 100644 history/google.yml
+
+2021-09-20T19:00:07.636Z info: Status is different unknown to up
+2021-09-20T19:00:07.779Z info: Could not find a relevant issue
+2021-09-20T19:00:07.780Z info: Checking https://in.yahoo.com
+2021-09-20T19:00:07.785Z info: Current status undefined unknown Tue Sep 21 2021 00:30:07 GMT+0530 (India Standard Time)
+2021-09-20T19:00:09.504Z info: Result from test 200 1.716001
+2021-09-20T19:00:10.911Z info: [main c1b9805] 🟩 Yahoo is up (200 in 1716 ms) [skip ci] [upptime]
+ 1 file changed, 7 insertions(+)
+ create mode 100644 history/yahoo.yml
+
+2021-09-20T19:00:11.216Z info: Status is different unknown to up
+2021-09-20T19:00:11.368Z info: Could not find a relevant issue
+2021-09-20T19:00:11.395Z info: Uptimes
+2021-09-20T19:00:11.573Z info: weekSum,  653, 653
+2021-09-20T19:00:11.573Z info: Response times
+2021-09-20T19:00:11.581Z info: Uptimes
+2021-09-20T19:00:11.763Z info: weekSum,  469, 469
+2021-09-20T19:00:11.763Z info: Response times
+2021-09-20T19:00:11.767Z info: Uptimes
+2021-09-20T19:00:11.924Z info: weekSum,  311, 311
+2021-09-20T19:00:11.925Z info: Response times
+2021-09-20T19:00:11.929Z info: Uptimes
+2021-09-20T19:00:12.208Z info: weekSum,  1716, 1716
+2021-09-20T19:00:12.208Z info: Response times
+2021-09-20T19:00:13.519Z info: [main c41b9f1] :pencil: Update summary in README [skip ci] [upptime]
+ 1 file changed, 18 insertions(+), 10 deletions(-)
+
+2021-09-20T19:00:15.178Z info: [main 74cf4f7] :card_file_box: Update status summary [skip ci] [upptime]
+ 1 file changed, 74 insertions(+)
+ create mode 100644 history/summary.json
+
+2021-09-20T19:05:00.717Z info: Checking https://www.github.com
+2021-09-20T19:05:00.723Z info: Current status undefined up Tue Sep 21 2021 00:30:00 GMT+0530 (India Standard Time)
+2021-09-20T19:05:01.146Z info: Result from test 200 0.417665
+2021-09-20T19:05:01.147Z info: Skipping commit, status is up
+2021-09-20T19:05:01.147Z info: Checking https://www.wikipedia.org
+2021-09-20T19:05:01.150Z info: Current status undefined up Tue Sep 21 2021 00:30:03 GMT+0530 (India Standard Time)
+2021-09-20T19:05:01.672Z info: Result from test 200 0.519309
+2021-09-20T19:05:01.672Z info: Skipping commit, status is up
+2021-09-20T19:05:01.672Z info: Checking https://www.google.com
+2021-09-20T19:05:01.674Z info: Current status undefined up Tue Sep 21 2021 00:30:05 GMT+0530 (India Standard Time)
+2021-09-20T19:05:01.945Z info: Result from test 200 0.268847
+2021-09-20T19:05:01.945Z info: Skipping commit, status is up
+2021-09-20T19:05:01.946Z info: Checking https://in.yahoo.com
+2021-09-20T19:05:01.950Z info: Current status undefined up Tue Sep 21 2021 00:30:07 GMT+0530 (India Standard Time)
+2021-09-20T19:05:04.169Z info: Result from test 200 2.213939
+2021-09-20T19:05:04.169Z info: Skipping commit, status is up
+2021-09-20T19:10:00.077Z info: Checking https://www.github.com
+2021-09-20T19:10:00.079Z info: Current status undefined up Tue Sep 21 2021 00:30:00 GMT+0530 (India Standard Time)
+2021-09-20T19:10:00.512Z info: Result from test 200 0.428743
+2021-09-20T19:10:00.512Z info: Skipping commit, status is up
+2021-09-20T19:10:00.512Z info: Checking https://www.wikipedia.org
+2021-09-20T19:10:00.515Z info: Current status undefined up Tue Sep 21 2021 00:30:03 GMT+0530 (India Standard Time)
+2021-09-20T19:10:00.968Z info: Result from test 200 0.449973
+2021-09-20T19:10:00.968Z info: Skipping commit, status is up
+2021-09-20T19:10:00.968Z info: Checking https://www.google.com
+2021-09-20T19:10:00.974Z info: Current status undefined up Tue Sep 21 2021 00:30:05 GMT+0530 (India Standard Time)
+2021-09-20T19:10:01.292Z info: Result from test 200 0.312215
+2021-09-20T19:10:01.292Z info: Skipping commit, status is up
+2021-09-20T19:10:01.293Z info: Checking https://in.yahoo.com
+2021-09-20T19:10:01.298Z info: Current status undefined up Tue Sep 21 2021 00:30:07 GMT+0530 (India Standard Time)
+2021-09-20T19:10:03.749Z info: Result from test 200 2.446505
+2021-09-20T19:10:03.749Z info: Skipping commit, status is up
+2021-09-20T19:15:00.547Z info: Checking https://www.github.com
+2021-09-20T19:15:00.549Z info: Current status undefined up Tue Sep 21 2021 00:30:00 GMT+0530 (India Standard Time)
+2021-09-20T19:15:00.954Z info: Result from test 200 0.399682
+2021-09-20T19:15:00.954Z info: Skipping commit, status is up
+2021-09-20T19:15:00.954Z info: Checking https://www.wikipedia.org
+2021-09-20T19:15:00.959Z info: Current status undefined up Tue Sep 21 2021 00:30:03 GMT+0530 (India Standard Time)
+2021-09-20T19:15:01.447Z info: Result from test 200 0.48418
+2021-09-20T19:15:01.448Z info: Skipping commit, status is up
+2021-09-20T19:15:01.448Z info: Checking https://www.google.com
+2021-09-20T19:15:01.452Z info: Current status undefined up Tue Sep 21 2021 00:30:05 GMT+0530 (India Standard Time)
+2021-09-20T19:15:01.708Z info: Result from test 200 0.254227
+2021-09-20T19:15:01.709Z info: Skipping commit, status is up
+2021-09-20T19:15:01.709Z info: Checking https://in.yahoo.com
+2021-09-20T19:15:01.715Z info: Current status undefined up Tue Sep 21 2021 00:30:07 GMT+0530 (India Standard Time)
+2021-09-20T19:15:04.268Z info: Result from test 200 2.549773
+2021-09-20T19:15:04.268Z info: Skipping commit, status is up
+2021-09-20T19:20:00.991Z info: Checking https://www.github.com
+2021-09-20T19:20:00.994Z info: Current status undefined up Tue Sep 21 2021 00:30:00 GMT+0530 (India Standard Time)
+2021-09-20T19:20:01.575Z info: Result from test 200 0.576592
+2021-09-20T19:20:01.575Z info: Skipping commit, status is up
+2021-09-20T19:20:01.575Z info: Checking https://www.wikipedia.org
+2021-09-20T19:20:01.577Z info: Current status undefined up Tue Sep 21 2021 00:30:03 GMT+0530 (India Standard Time)
+2021-09-20T19:20:02.039Z info: Result from test 200 0.458507
+2021-09-20T19:20:02.039Z info: Skipping commit, status is up
+2021-09-20T19:20:02.039Z info: Checking https://www.google.com
+2021-09-20T19:20:02.041Z info: Current status undefined up Tue Sep 21 2021 00:30:05 GMT+0530 (India Standard Time)
+2021-09-20T19:20:02.303Z info: Result from test 200 0.260742
+2021-09-20T19:20:02.303Z info: Skipping commit, status is up
+2021-09-20T19:20:02.303Z info: Checking https://in.yahoo.com
+2021-09-20T19:20:02.306Z info: Current status undefined up Tue Sep 21 2021 00:30:07 GMT+0530 (India Standard Time)
+2021-09-20T19:20:04.320Z info: Result from test 200 2.010957
+2021-09-20T19:20:04.320Z info: Skipping commit, status is up
+2021-09-20T19:25:00.184Z info: Checking https://www.github.com
+2021-09-20T19:25:00.189Z info: Current status undefined up Tue Sep 21 2021 00:30:00 GMT+0530 (India Standard Time)
+2021-09-20T19:25:00.677Z info: Result from test 200 0.479843
+2021-09-20T19:25:00.677Z info: Skipping commit, status is up
+2021-09-20T19:25:00.677Z info: Checking https://www.wikipedia.org
+2021-09-20T19:25:00.686Z info: Current status undefined up Tue Sep 21 2021 00:30:03 GMT+0530 (India Standard Time)
+2021-09-20T19:25:01.153Z info: Result from test 200 0.462258
+2021-09-20T19:25:01.153Z info: Skipping commit, status is up
+2021-09-20T19:25:01.154Z info: Checking https://www.google.com
+2021-09-20T19:25:01.158Z info: Current status undefined up Tue Sep 21 2021 00:30:05 GMT+0530 (India Standard Time)
+2021-09-20T19:25:01.441Z info: Result from test 200 0.279446
+2021-09-20T19:25:01.441Z info: Skipping commit, status is up
+2021-09-20T19:25:01.441Z info: Checking https://in.yahoo.com
+2021-09-20T19:25:01.447Z info: Current status undefined up Tue Sep 21 2021 00:30:07 GMT+0530 (India Standard Time)
+2021-09-20T19:25:03.821Z info: Result from test 200 2.369011
+2021-09-20T19:25:03.821Z info: Skipping commit, status is up
+2021-09-20T19:30:00.651Z info: Checking https://www.github.com
+2021-09-20T19:30:00.654Z info: Current status undefined up Tue Sep 21 2021 00:30:00 GMT+0530 (India Standard Time)
+2021-09-20T19:30:01.098Z info: Result from test 200 0.442471
+2021-09-20T19:30:01.099Z info: Skipping commit, status is up
+2021-09-20T19:30:01.099Z info: Checking https://www.wikipedia.org
+2021-09-20T19:30:01.100Z info: Current status undefined up Tue Sep 21 2021 00:30:03 GMT+0530 (India Standard Time)
+2021-09-20T19:30:01.640Z info: Result from test 200 0.535055
+2021-09-20T19:30:01.641Z info: Skipping commit, status is up
+2021-09-20T19:30:01.641Z info: Checking https://www.google.com
+2021-09-20T19:30:01.647Z info: Current status undefined up Tue Sep 21 2021 00:30:05 GMT+0530 (India Standard Time)
+2021-09-20T19:30:01.928Z info: Result from test 200 0.273049
+2021-09-20T19:30:01.928Z info: Skipping commit, status is up
+2021-09-20T19:30:01.929Z info: Checking https://in.yahoo.com
+2021-09-20T19:30:01.934Z info: Current status undefined up Tue Sep 21 2021 00:30:07 GMT+0530 (India Standard Time)
+2021-09-20T19:30:04.004Z info: Result from test 200 2.063076
+2021-09-20T19:30:04.005Z info: Skipping commit, status is up
+2021-09-20T19:30:04.007Z info: Generate Site
