@@ -5,37 +5,37 @@ import {getConfig} from './helpers/config'
 import {infoErrorLogger} from './helpers/log'
 import {getHistoryItems} from './helpers/calculate-response-time'
 import dayjs from 'dayjs'
-// import {ChartJSNodeCanvas} from 'chartjs-node-canvas'
+import {ChartJSNodeCanvas} from 'chartjs-node-canvas'
 import {cli} from 'cli-ux'
 import chalk from 'chalk'
 
-// const canvasRenderService = new ChartJSNodeCanvas({width: 600, height: 400})
-// const chartOptions = {
-//   plugins: {
-//     legend: {display: false},
-//   },
-//   scales: {
-//     xAxes: {
-//       display: false,
-//       grid: {
-//         display: false,
-//       },
-//     },
-//     yAxes: {
-//       display: false,
-//       grid: {
-//         display: false,
-//       },
-//     },
-//   },
-// }
+const canvasRenderService = new ChartJSNodeCanvas({width: 600, height: 400})
+const chartOptions = {
+  plugins: {
+    legend: {display: false},
+  },
+  scales: {
+    xAxes: {
+      display: false,
+      grid: {
+        display: false,
+      },
+    },
+    yAxes: {
+      display: false,
+      grid: {
+        display: false,
+      },
+    },
+  },
+}
 
 export const generateGraphs = async () => {
   cli.action.start('Running graphs workflow')
   infoErrorLogger.info('Generate Graphs')
   const config = await getConfig()
-
-  await ensureDir(join('.', 'graphs'))
+  try{
+    await ensureDir(join('.', 'graphs'))
 
   for await (const site of config.sites) {
     const slug = slugify(site.name)
@@ -115,6 +115,11 @@ export const generateGraphs = async () => {
         options: chartOptions,
       })
     )
+  }
+
+  }
+  catch(error){
+    cli.action.stop(chalk.red('error'))
   }
   cli.action.stop(chalk.green('done'))
 }
