@@ -31,11 +31,12 @@ const chartOptions = {
 }
 
 export const generateGraphs = async () => {
+  console.log("in")
   cli.action.start('Running graphs workflow')
   infoErrorLogger.info('Generate Graphs')
   const config = await getConfig()
   try{
-    await ensureDir(join('.', 'graphs'))
+  await ensureDir(join('.', 'graphs'))
 
   for await (const site of config.sites) {
     const slug = slugify(site.name)
@@ -67,53 +68,54 @@ export const generateGraphs = async () => {
     const tWeek = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'week')))
     const tMonth = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'month')))
     const tYear = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'year')))
-    const dataItems: [string, [string, number][]][] = [
-      [`${slug}/response-time-day.png`, tDay],
-      [`${slug}/response-time-week.png`, tWeek],
-      [`${slug}/response-time-month.png`, tMonth],
-      [`${slug}/response-time-year.png`, tYear],
-    ]
-
-    for await (const dataItem of dataItems) {
+    // const dataItems: [string, [string, number][]][] = [
+    //   [`${slug}/response-time-day.png`, tDay],
+    //   [`${slug}/response-time-week.png`, tWeek],
+    //   [`${slug}/response-time-month.png`, tMonth],
+    //   [`${slug}/response-time-year.png`, tYear],
+    // ]
+    const example =""
+    // for await (const dataItem of dataItems) {
+    for await (const dataItem of responseTimes) {
       await ensureFile(join('.', 'graphs', dataItem[0]))
       await writeFile(
-        join('.', 'graphs', dataItem[0]),
-        await canvasRenderService.renderToBuffer({
-          type: 'line',
-          data: {
-            labels: [1, ...dataItem[1].map(item => item[0]).reverse()],
-            datasets: [
-              {
-                backgroundColor: '#89e0cf',
-                borderColor: '#1abc9c',
-                fill: true,
-                data: [1, ...dataItem[1].map(item => item[1]).reverse()],
-              },
-            ],
-          },
-          options: chartOptions,
-        })
+        join('.', 'graphs', dataItem[0]),example
+        // await canvasRenderService.renderToBuffer({
+        //   type: 'line',
+        //   data: {
+        //     labels: [1, ...dataItem[1].map(item => item[0]).reverse()],
+        //     datasets: [
+        //       {
+        //         backgroundColor: '#89e0cf',
+        //         borderColor: '#1abc9c',
+        //         fill: true,
+        //         data: [1, ...dataItem[1].map(item => item[1]).reverse()],
+        //       },
+        //     ],
+        //   },
+        //   options: chartOptions,
+        // })
       )
     }
 
     await ensureFile(join('.', 'graphs', slug, 'response-time.png'))
     await writeFile(
-      join('.', 'graphs', slug, 'response-time.png'),
-      await canvasRenderService.renderToBuffer({
-        type: 'line',
-        data: {
-          labels: [1, ...responseTimes.map(item => item[0]).reverse()],
-          datasets: [
-            {
-              backgroundColor: '#89e0cf',
-              borderColor: '#1abc9c',
-              fill: true,
-              data: [1, ...responseTimes.map(item => item[1]).reverse()],
-            },
-          ],
-        },
-        options: chartOptions,
-      })
+      join('.', 'graphs', slug, 'response-time.png'),example
+      // await canvasRenderService.renderToBuffer({
+      //   type: 'line',
+      //   data: {
+      //     labels: [1, ...responseTimes.map(item => item[0]).reverse()],
+      //     datasets: [
+      //       {
+      //         backgroundColor: '#89e0cf',
+      //         borderColor: '#1abc9c',
+      //         fill: true,
+      //         data: [1, ...responseTimes.map(item => item[1]).reverse()],
+      //       },
+      //     ],
+      //   },
+      //   options: chartOptions,
+      // })
     )
   }
 
