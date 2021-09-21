@@ -1,6 +1,6 @@
 import slugify from '@sindresorhus/slugify'
-import { appendFile } from 'fs'
-import {mkdirp, ensureDir, ensureFile, writeFile, writeFileSync} from 'fs-extra'
+import { appendFile, writeSync } from 'fs'
+import {mkdirp, ensureDir, ensureFile, writeFile, writeFileSync, readFile} from 'fs-extra'
 import {join} from 'path'
 import {getConfig} from './helpers/config'
 import {infoErrorLogger} from './helpers/log'
@@ -10,17 +10,16 @@ import chalk from 'chalk'
 
 
 export const generateGraphs = async () => {
-  console.log("in")
   cli.action.start('Running graphs workflow')
-  infoErrorLogger.info('Generate Graphs')
+  infoErrorLogger.info('Generate Graphs') 
   const config = await getConfig()
-  await mkdirp('history')
+  await mkdirp(join('.','history','response-data'))
   try{
 
   for await (const site of config.sites) {
     const slug = slugify(site.name)
     if (!slug) continue
-    console.log(slug)
+    // console.log(slug)
     const items = await getHistoryItems(slug)
     // console.log(items)
     const responseTimes: [string, number][] = items
@@ -47,20 +46,37 @@ export const generateGraphs = async () => {
     // creating separate files
      await writeFile(join('.', 'history','response-data', `${slug}.yml`), '')
 
-
     // appending response times to those files
     for await (const dataItem of responseTimes) {
-      console.log(dataItem[1])
-    //   // plotting graph logic to be added here.
-
-    //   // way to store the data
-    }
-    
+      await appendFile(
+      join('.', 'history', 'response-data',`${slug}.yml`),dataItem[1].toString()+'\n',(err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    } 
   }
-
   }
   catch(error){
     cli.action.stop(chalk.red('error'))
   }
   cli.action.stop(chalk.green('done'))
 }
+
+
+/*
+
+yml
+
+day = [1]
+week = [7]
+month = [10]
+year = [12]
+
+more than once in a day
+append/overwrite
+
+// github graph
+
+
+*/ 
