@@ -1,6 +1,7 @@
 import slugify from '@sindresorhus/slugify'
-// import {ensureDir, ensureFile, writeFile} from 'fs-extra'
-// import {join} from 'path'
+import { appendFile } from 'fs'
+import {mkdirp, ensureDir, ensureFile, writeFile, writeFileSync} from 'fs-extra'
+import {join} from 'path'
 import {getConfig} from './helpers/config'
 import {infoErrorLogger} from './helpers/log'
 import {getHistoryItems} from './helpers/calculate-response-time'
@@ -14,13 +15,15 @@ export const generateGraphs = async () => {
   cli.action.start('Running graphs workflow')
   infoErrorLogger.info('Generate Graphs')
   const config = await getConfig()
+  await mkdirp('history')
   try{
 
   for await (const site of config.sites) {
     const slug = slugify(site.name)
     if (!slug) continue
-
+    console.log(slug)
     const items = await getHistoryItems(slug)
+    // console.log(items)
     const responseTimes: [string, number][] = items
     .filter(
       item =>
@@ -47,23 +50,28 @@ export const generateGraphs = async () => {
     const tMonth = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'month')))
     const tYear = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'year')))
 
-    console.log(responseTimes)
-    console.log("day" + tDay)
-    console.log("week" + tWeek)
-    console.log("month" + tMonth)
-    console.log("year" + tYear)
+
+    // await appendFile(
+    //   join('.', 'history', 'graph-data.yml'),"responseTimes",(err) => {
+    //     if (err) {
+    //       console.log(err);
+    //     }
+    //   });
+
 
     console.log("test graphs")
     for await (const dataItem of responseTimes) {
+      console.log(dataItem[1])
+    //   // plotting graph logic to be added here.
 
-      // plotting graph logic to be added here.
-
-      //way to store the data
+    //   // way to store the data
     }
+    
   }
 
   }
   catch(error){
+    // console.log(error)
     cli.action.stop(chalk.red('error'))
   }
   cli.action.stop(chalk.green('done'))
