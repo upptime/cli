@@ -5,7 +5,6 @@ import {join} from 'path'
 import {getConfig} from './helpers/config'
 import {infoErrorLogger} from './helpers/log'
 import {getHistoryItems} from './helpers/calculate-response-time'
-import dayjs from 'dayjs'
 import {cli} from 'cli-ux'
 import chalk from 'chalk'
 
@@ -45,21 +44,11 @@ export const generateGraphs = async () => {
     )
     .filter(item => item[1] && !isNaN(item[1]))
 
-    const tDay = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'day')))
-    const tWeek = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'week')))
-    const tMonth = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'month')))
-    const tYear = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'year')))
+    // creating separate files
+     await writeFile(join('.', 'history','response-data', `${slug}.yml`), '')
 
 
-    // await appendFile(
-    //   join('.', 'history', 'graph-data.yml'),"responseTimes",(err) => {
-    //     if (err) {
-    //       console.log(err);
-    //     }
-    //   });
-
-
-    console.log("test graphs")
+    // appending response times to those files
     for await (const dataItem of responseTimes) {
       console.log(dataItem[1])
     //   // plotting graph logic to be added here.
@@ -71,7 +60,6 @@ export const generateGraphs = async () => {
 
   }
   catch(error){
-    // console.log(error)
     cli.action.stop(chalk.red('error'))
   }
   cli.action.stop(chalk.green('done'))
