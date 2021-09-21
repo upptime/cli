@@ -66,7 +66,8 @@ async run() {
     }
   } 
   else {
-    // console.log("reached")
+    console.log("Setting up workflows")
+    // cli.action.stop('Workflows set-up complete')
     if (flags.uptime)
       returnWorkflows(update, config.workflowSchedule?.uptime ?? UPTIME_CI_SCHEDULE)
     if (flags.responseTime)
