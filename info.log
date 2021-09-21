@@ -500,3 +500,84 @@
 2021-09-21T18:39:05.055Z info: Generate Graphs
 2021-09-21T18:40:48.995Z info: Generate Graphs
 2021-09-21T18:41:44.214Z info: Generate Graphs
+2021-09-21T19:08:25.530Z info: Generate Graphs
+2021-09-21T19:09:32.504Z info: Generate Graphs
+2021-09-21T19:11:00.446Z info: Generate Graphs
+2021-09-21T19:15:22.915Z info: Generate Graphs
+2021-09-21T19:16:23.581Z info: Generate Graphs
+2021-09-21T19:17:57.123Z info: Generate Graphs
+2021-09-21T19:18:14.857Z info: Generate Graphs
+2021-09-21T19:19:02.320Z info: Generate Graphs
+2021-09-21T19:19:24.418Z info: Generate Graphs
+2021-09-21T19:20:09.920Z info: Generate Graphs
+2021-09-21T19:27:19.203Z info: Generate Graphs
+2021-09-21T19:29:49.736Z info: Generate Graphs
+2021-09-21T19:31:29.691Z info: Generate Graphs
+2021-09-21T19:32:28.724Z info: Generate Graphs
+2021-09-21T19:49:46.079Z info: Generate Graphs
+2021-09-21T19:50:38.026Z info: Generate Graphs
+2021-09-21T19:52:06.008Z info: Generate Graphs
+2021-09-21T19:52:18.434Z info: Generate Graphs
+2021-09-21T19:52:51.907Z info: Generate Graphs
+2021-09-21T19:53:38.062Z info: Generate Graphs
+2021-09-21T19:54:17.566Z info: Generate Graphs
+2021-09-21T19:55:31.204Z info: Generate Graphs
+2021-09-21T19:55:53.209Z info: Generate Graphs
+2021-09-21T19:57:03.904Z info: Generate Graphs
+2021-09-21T19:57:37.478Z info: Generate Graphs
+2021-09-21T19:58:15.060Z info: Generate Graphs
+2021-09-21T20:00:03.588Z info: Generate Graphs
+2021-09-21T20:00:53.158Z info: Generate Graphs
+2021-09-21T20:02:45.571Z info: Checking https://www.github.com
+2021-09-21T20:02:45.583Z info: Current status undefined up Tue Sep 21 2021 23:35:23 GMT+0530 (India Standard Time)
+2021-09-21T20:02:46.199Z info: Result from test 200 0.565513
+2021-09-21T20:02:48.835Z info: [main ffe72fc] 🟩 Github is up (200 in 566 ms) [skip ci] [upptime]
+ 9 files changed, 92 insertions(+), 24 deletions(-)
+ delete mode 100644 history/graph-data.yml
+ create mode 100644 history/response-data/github.yml
+ create mode 100644 history/response-data/google.yml
+ create mode 100644 history/response-data/wikipedia.yml
+ create mode 100644 history/response-data/yahoo.yml
+
+2021-09-21T20:02:50.054Z info: Status is the same up up
+2021-09-21T20:02:50.054Z info: Checking https://www.wikipedia.org
+2021-09-21T20:02:50.059Z info: Current status undefined up Tue Sep 21 2021 23:35:25 GMT+0530 (India Standard Time)
+2021-09-21T20:02:50.540Z info: Result from test 200 0.478303
+2021-09-21T20:02:52.233Z info: [main c458b58] 🟩 Wikipedia is up (200 in 478 ms) [skip ci] [upptime]
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+2021-09-21T20:02:52.538Z info: Status is the same up up
+2021-09-21T20:02:52.538Z info: Checking https://www.google.com
+2021-09-21T20:02:52.541Z info: Current status undefined up Tue Sep 21 2021 23:35:27 GMT+0530 (India Standard Time)
+2021-09-21T20:02:52.859Z info: Result from test 200 0.31426
+2021-09-21T20:02:56.281Z info: [main abc04a0] 🟩 Google is up (200 in 314 ms) [skip ci] [upptime]
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+2021-09-21T20:02:57.320Z info: Status is the same up up
+2021-09-21T20:02:57.320Z info: Checking https://in.yahoo.com
+2021-09-21T20:02:57.328Z info: Current status undefined up Tue Sep 21 2021 23:35:28 GMT+0530 (India Standard Time)
+2021-09-21T20:02:59.313Z info: Result from test 200 1.982215
+2021-09-21T20:03:00.597Z info: [main 1639065] 🟩 Yahoo is up (200 in 1982 ms) [skip ci] [upptime]
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+
+2021-09-21T20:03:01.103Z info: Status is the same up up
+2021-09-21T20:03:01.110Z info: Generate Graphs
+2021-09-21T20:03:02.011Z info: Uptimes
+2021-09-21T20:03:02.396Z info: weekSum,  566,586,413,413,439,440,647,653, 519.625
+2021-09-21T20:03:02.397Z info: Response times
+2021-09-21T20:03:02.416Z info: Uptimes
+2021-09-21T20:03:02.767Z info: weekSum,  478,472,586,462,487,470,477,478,469, 486.55555555555554
+2021-09-21T20:03:02.767Z info: Response times
+2021-09-21T20:03:02.771Z info: Uptimes
+2021-09-21T20:03:02.989Z info: weekSum,  314,269,586,588,587,727,610,632,311, 513.7777777777778
+2021-09-21T20:03:02.989Z info: Response times
+2021-09-21T20:03:02.992Z info: Uptimes
+2021-09-21T20:03:03.229Z info: weekSum,  1982,5093,586,2496,2008,1202,2320,1128,1716, 2059
+2021-09-21T20:03:03.229Z info: Response times
+2021-09-21T20:03:05.231Z info: [main 309b763] :pencil: Update summary in README [skip ci] [upptime]
+ 5 files changed, 21 insertions(+), 10 deletions(-)
+
+2021-09-21T20:03:07.504Z info: [main 59705b9] :card_file_box: Update status summary [skip ci] [upptime]
+ 2 files changed, 36 insertions(+), 19 deletions(-)
+
+2021-09-21T20:03:08.486Z info: Generate Site
