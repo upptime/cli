@@ -10,6 +10,8 @@ import {UppConfig} from '../interfaces'
 import {generateSite} from '../site'
 import {generateSummary} from '../summary'
 import {update} from '../update'
+import {cli} from 'cli-ux'
+import { Dayvalues } from '../graphs'
 
 export default class Run extends Command {
 static description = 'Run workflows'
@@ -48,7 +50,8 @@ async run() {
       if (flags.responseTime)
         queue.add(() => update(true))
       if (flags.graphs)
-        console.log("test")
+        // testing graph
+        queue.add(() => Dayvalues('Github'))
         queue.add(generateGraphs)
       if (flags.summary)
         queue.add(generateSummary)
