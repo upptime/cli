@@ -7,6 +7,7 @@ import {infoErrorLogger} from './helpers/log'
 import {getHistoryItems} from './helpers/calculate-response-time'
 import {cli} from 'cli-ux'
 import chalk from 'chalk'
+import dayjs from 'dayjs'
 
 
 export const generateGraphs = async () => {
@@ -44,20 +45,28 @@ export const generateGraphs = async () => {
     .filter(item => item[1] && !isNaN(item[1]))
 
     // creating separate files
-     await writeFile(join('.', 'history','response-data', `${slug}.yml`), '')
+    const tDay = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'day')))
+    const tWeek = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'week')))
+    const tMonth = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'month')))
+    const tYear = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'year')))
+    const dataItems: [string, [string, number][]][] = [
+      [`${slug}/response-time-day.yml`, tDay],
+      [`${slug}/response-time-week.yml`, tWeek],
+      [`${slug}/response-time-month.yml`, tMonth],
+      [`${slug}/response-time-year.yml`, tYear],
+    ]
 
-    // appending response times to those files
-    for await (const dataItem of responseTimes) {
-      await appendFile(
-      join('.', 'history', 'response-data',`${slug}.yml`),dataItem[1].toString()+'\n',(err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
-    } 
+    for await (const dataItem of dataItems) {
+      await ensureFile(join('.', 'history', dataItem[0]))
+      await writeFile(
+        join('.', 'history', dataItem[0]), 
+                [1, ...dataItem[1].map(item => item[1]).reverse()].toString().split(',').join('\n')
+      )
+    }
   }
   }
   catch(error){
+    console.log(error)
     cli.action.stop(chalk.red('error'))
   }
   cli.action.stop(chalk.green('done'))
