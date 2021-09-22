@@ -57,9 +57,9 @@ export const generateGraphs = async () => {
     ]
 
     for await (const dataItem of dataItems) {
-      await ensureFile(join('.', 'history', dataItem[0]))
+      await ensureFile(join('.', 'history', 'response-data' ,dataItem[0]))
       await writeFile(
-        join('.', 'history', dataItem[0]), 
+        join('.', 'history', 'response-data' ,dataItem[0]), 
                 [1, ...dataItem[1].map(item => item[1]).reverse()].toString().split(',').join('\n')
       )
     }
