@@ -1,5 +1,4 @@
-*-debug.log
-*-error.log
+*.log
 /.nyc_output
 /dist
 /lib
@@ -9,4 +8,3 @@ node_modules
 .DS_Store
 .uclirc.yml
 history
-*.log
