@@ -4,6 +4,7 @@ import {join} from 'path'
 import cli from 'cli-ux'
 import chalk from 'chalk'
 
+// Error.stackTraceLimit = Infinity;
 export const Dayvalues = async(slug = "") =>{
     try{
         const config = await getConfig()
@@ -28,7 +29,6 @@ export const Dayvalues = async(slug = "") =>{
                 var interval = Math.floor(num/5)
                 var sum = 0
                 for(var i=1;i<num+1;i++){
-                    console.log("in")
                     if(count >= interval){
                         values.push(Math.floor(sum/interval))
                         sum = 0;
@@ -50,6 +50,7 @@ export const Dayvalues = async(slug = "") =>{
         cli.action.stop(chalk.red('Some issue fetching response time data'))
     }
     // return array
+    console.log("day ",values)
     return values;
 }
 
@@ -75,7 +76,6 @@ export const Weekvalues = async(slug = "") =>{
                 var interval = Math.floor(num/7)
                 var sum = 0
                 for(var i=1;i<num+1;i++){
-                    console.log("in")
                     if(count >= interval){
                         values.push(Math.floor(sum/interval))
                         sum = 0;
@@ -97,18 +97,21 @@ export const Weekvalues = async(slug = "") =>{
         cli.action.stop(chalk.red('Some issue fetching response time data'))
     }
     // return array
-    return values;
+    console.log("week ",values)
+    // return values;
 }
 
 
 export const Monthvalues = async(slug = "") =>{
     try{
+        
         const config = await getConfig()
-        const exists = config.sites.map(ob => ob.name === `${slug}` ?  true : false)
+        
+        const exists = config.sites.map(ob => ob.name.toLowerCase() === `${slug.toLowerCase()}` ?  true : false)
         if(exists.includes(true)){
-            
             // change structure before push
-            const daysArray = (await readFile(join('.', 'history', 'response-data' ,`${slug.toLowerCase()}`, 'response-time-week.yml'), 'utf8')).split('\n')
+            const daysArray = (await readFile(join('.', 'history', 'response-data' ,`${slug.toLowerCase()}`, 'response-time-month.yml'), 'utf8')).split('\n')
+
             var num = daysArray.length;
             
             var values = []
@@ -123,7 +126,6 @@ export const Monthvalues = async(slug = "") =>{
                 var interval = Math.floor(num/10)
                 var sum = 0
                 for(var i=1;i<num+1;i++){
-                    console.log("in")
                     if(count >= interval){
                         values.push(Math.floor(sum/interval))
                         sum = 0;
@@ -145,6 +147,7 @@ export const Monthvalues = async(slug = "") =>{
         cli.action.stop(chalk.red('Some issue fetching response time data'))
     }
     // return array
+    console.log("month ",values)
     return values;
 }
 
@@ -156,7 +159,7 @@ export const Yearvalues = async(slug = "") =>{
         if(exists.includes(true)){
             
             // change structure before push
-            const daysArray = (await readFile(join('.', 'history', 'response-data' ,`${slug.toLowerCase()}`, 'response-time-week.yml'), 'utf8')).split('\n')
+            const daysArray = (await readFile(join('.', 'history', 'response-data' ,`${slug.toLowerCase()}`, 'response-time-year.yml'), 'utf8')).split('\n')
             var num = daysArray.length;
             
             var values = []
@@ -171,7 +174,6 @@ export const Yearvalues = async(slug = "") =>{
                 var interval = Math.floor(num/12)
                 var sum = 0
                 for(var i=1;i<num+1;i++){
-                    console.log("in")
                     if(count >= interval){
                         values.push(Math.floor(sum/interval))
                         sum = 0;
@@ -193,6 +195,7 @@ export const Yearvalues = async(slug = "") =>{
         cli.action.stop(chalk.red('Some issue fetching response time data'))
     }
     // return array
+    console.log("year ",values)
     return values;
 }
 
