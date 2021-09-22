@@ -2,9 +2,9 @@ import slugify from '@sindresorhus/slugify'
 import { appendFile, writeSync } from 'fs'
 import {mkdirp, ensureDir, ensureFile, writeFile, writeFileSync, readFile} from 'fs-extra'
 import {join} from 'path'
-import {getConfig} from './helpers/config'
-import {infoErrorLogger} from './helpers/log'
-import {getHistoryItems} from './helpers/calculate-response-time'
+import {getConfig} from './config'
+import {infoErrorLogger} from './log'
+import {getHistoryItems} from './calculate-response-time'
 import {cli} from 'cli-ux'
 import chalk from 'chalk'
 import dayjs from 'dayjs'
@@ -71,21 +71,3 @@ export const generateGraphs = async () => {
   }
   cli.action.stop(chalk.green('done'))
 }
-
-
-/*
-
-yml
-
-day = [1]
-week = [7]
-month = [10]
-year = [12]
-
-more than once in a day
-append/overwrite
-
-// github graph
-
-
-*/ 
