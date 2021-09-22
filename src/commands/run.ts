@@ -11,7 +11,7 @@ import {generateSite} from '../site'
 import {generateSummary} from '../summary'
 import {update} from '../update'
 import {cli} from 'cli-ux'
-import { Dayvalues } from '../graphs'
+import { Dayvalues , Weekvalues, Monthvalues, Yearvalues} from '../graphs'
 
 export default class Run extends Command {
 static description = 'Run workflows'
@@ -50,8 +50,11 @@ async run() {
       if (flags.responseTime)
         queue.add(() => update(true))
       if (flags.graphs)
-        // testing graph
+        // method to call data point function
         queue.add(() => Dayvalues('Github'))
+        queue.add(() => Weekvalues('Google'))
+        queue.add(() => Monthvalues('Wikipedia'))
+        queue.add(() => Yearvalues('Yahoo'))
         queue.add(generateGraphs)
       if (flags.summary)
         queue.add(generateSummary)
