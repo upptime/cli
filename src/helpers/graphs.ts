@@ -66,7 +66,8 @@ export const generateGraphs = async () => {
   }
   }
   catch(error){
-    console.log(error)
+    // console.log(error)
+    infoErrorLogger.error(error)
     cli.action.stop(chalk.red('error'))
   }
   cli.action.stop(chalk.green('done'))
