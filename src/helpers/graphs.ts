@@ -50,14 +50,14 @@ export const generateGraphs = async () => {
     const tMonth = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'month')))
     const tYear = responseTimes.filter(i => dayjs(i[0]).isAfter(dayjs().subtract(1, 'year')))
     const dataItems: [string, [string, number][]][] = [
-      [`${slug}/response-time-day.yml`, tDay],
-      [`${slug}/response-time-week.yml`, tWeek],
-      [`${slug}/response-time-month.yml`, tMonth],
-      [`${slug}/response-time-year.yml`, tYear],
+      [`response-time-day.yml`, tDay],
+      [`response-time-week.yml`, tWeek],
+      [`response-time-month.yml`, tMonth],
+      [`response-time-year.yml`, tYear],
     ]
 
     for await (const dataItem of dataItems) {
-      await ensureFile(join('.', 'history', 'response-data' ,dataItem[0]))
+      await ensureFile(join('.', 'history', 'response-data' ,`${slug}`,dataItem[0]))
       await writeFile(
         join('.', 'history', 'response-data' ,dataItem[0]), 
                 [1, ...dataItem[1].map(item => item[1]).reverse()].toString().split(',').join('\n')
