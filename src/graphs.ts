@@ -4,6 +4,7 @@ import {readFile} from 'fs-extra'
 import {join} from 'path'
 import cli from 'cli-ux'
 import chalk from 'chalk'
+import {infoErrorLogger} from './helpers/log'
 
 // Error.stackTraceLimit = Infinity;
 export const Dayvalues = async(slug = "") =>{
@@ -46,12 +47,12 @@ export const Dayvalues = async(slug = "") =>{
         }
     }
     catch(error){
-        console.log(error);
+        infoErrorLogger.error(error);
         // output message
         cli.action.stop(chalk.red('Some issue fetching response time data'))
     }
     // return array
-    console.log("day ",values)
+    // console.log("day ",values)
     return values;
 }
 
@@ -93,7 +94,7 @@ export const Weekvalues = async(slug = "") =>{
         }
     }
     catch(error){
-        console.log(error);
+        infoErrorLogger.error(error)
         // output message
         cli.action.stop(chalk.red('Some issue fetching response time data'))
     }
@@ -143,7 +144,7 @@ export const Monthvalues = async(slug = "") =>{
         }
     }
     catch(error){
-        console.log(error);
+        infoErrorLogger.error(error)
         // output message
         cli.action.stop(chalk.red('Some issue fetching response time data'))
     }
@@ -191,7 +192,7 @@ export const Yearvalues = async(slug = "") =>{
         }
     }
     catch(error){
-        console.log(error);
+        infoErrorLogger.error(error)
         // output message
         cli.action.stop(chalk.red('Some issue fetching response time data'))
     }
