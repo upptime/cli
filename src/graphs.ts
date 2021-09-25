@@ -1,3 +1,4 @@
+import slugify from '@sindresorhus/slugify'
 import {getConfig} from './helpers/config'
 import {readFile} from 'fs-extra'
 import {join} from 'path'
@@ -8,7 +9,7 @@ import chalk from 'chalk'
 export const Dayvalues = async(slug = "") =>{
     try{
         const config = await getConfig()
-        const exists = config.sites.map(ob => ob.name === `${slug}` ?  true : false)
+        const exists = config.sites.map(ob => ob.slug === `${slug}` || slugify(ob.name) == `${slug}`?  true : false)
         if(exists.includes(true)){
             
             // change structure before push
