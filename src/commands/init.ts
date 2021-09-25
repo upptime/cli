@@ -2,7 +2,7 @@ import Command from '../base'
 import fs = require('fs')
 import {prompt} from 'enquirer'
 import chalk from 'chalk'
-import {execSync} from 'child_process'
+import {exec} from 'shelljs'
 
 export default class Init extends Command {
   static description = 'initializes upptime';
@@ -11,7 +11,7 @@ export default class Init extends Command {
     // user inputs for configuration
     function testForGit(this: any) {
       try {
-        return execSync('git rev-parse --is-inside-work-tree 2>/dev/null', {encoding: 'utf8'})
+        return exec('git rev-parse --is-inside-work-tree', {silent: true, encoding: 'utf8'}).code
       } catch (error) {
         this.log(error)
       }
@@ -25,7 +25,7 @@ degraded.log
 status.log
 info.log`
 
-    if (!testForGit()) {
+    if (testForGit() !== 0) {
       this.log(chalk.bgRed('Directory is not git initialised'))
     } else if (fs.existsSync('.uclirc.yml')) {
       this.log(chalk.red('❌ Already Initialized'))
