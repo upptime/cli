@@ -1,4 +1,4 @@
-Upp
+Upptime CLI
 ===
 
 Uptime monitor and status page powered by GitHub Actions, Issues, and Pages
