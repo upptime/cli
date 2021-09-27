@@ -39,11 +39,11 @@ USAGE
 
 ## `upp config [FILE]`
 
-configures uclirc.yml
+configures `uclirc.yml`
 
 ```
 USAGE
-  $ upp config [FILE]
+  $ upp config
 
 OPTIONS
   -f, --force
