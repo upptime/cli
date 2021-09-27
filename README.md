@@ -1,4 +1,4 @@
-upp
+Upp
 ===
 
 Uptime monitor and status page powered by GitHub Actions, Issues, and Pages
@@ -29,16 +29,17 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`upp config [FILE]`](#upp-config-file)
+* [`upp config`](#upp-config)
 * [`upp docs`](#upp-docs)
 * [`upp help [COMMAND]`](#upp-help-command)
 * [`upp init`](#upp-init)
 * [`upp run [ITERATIONS]`](#upp-run-iterations)
 * [`upp status`](#upp-status)
+* [`upp incidents`](#upp-incidents)
 
 ## `upp config [FILE]`
 
-describe the command here
+configures uclirc.yml
 
 ```
 USAGE
