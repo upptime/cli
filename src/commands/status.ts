@@ -25,35 +25,35 @@ export default class Status extends Command {
           idx: i,
         })
         arr.push(data)
-        cli.table(arr, {
-          idx: {
-            header: '',
-          },
-          url: {
-            header: 'Website',
-            minWidth: 7,
-          },
-          status: {
-            header: 'Status',
-            get: row => row.status === 'up' ? `${row.status} 🟩` : row.status === 'down' ? `${row.status} 🟥` : `${row.status} 🟨`,
-            minWidth: 6,
-          },
-          code: {
-            header: 'CODE',
-            minWidth: 4,
-          },
-          responseTime: {
-            header: 'Response Time',
-            minWidth: 6,
-          },
-        }, {
-          printLine: this.log,
-        })
       } catch (error) {
         this.log(chalk.red.inverse('No Status available'))
         this.log(chalk.blue('Please run the upp run command first'))
         break
       }
     }
+    cli.table(arr, {
+      idx: {
+        header: '',
+      },
+      url: {
+        header: 'Website',
+        minWidth: 7,
+      },
+      status: {
+        header: 'Status',
+        get: row => row.status === 'up' ? `${row.status} 🟩` : row.status === 'down' ? `${row.status} 🟥` : `${row.status} 🟨`,
+        minWidth: 6,
+      },
+      code: {
+        header: 'CODE',
+        minWidth: 4,
+      },
+      responseTime: {
+        header: 'Response Time',
+        minWidth: 6,
+      },
+    }, {
+      printLine: this.log,
+    })
   }
 }
