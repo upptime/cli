@@ -50,7 +50,8 @@ export default class Status extends Command {
           printLine: this.log,
         })
       } catch (error) {
-        this.log('Please run the upp run command first')
+        this.log(chalk.red.inverse('No Status available'))
+        this.log(chalk.blue('Please run the upp run command first'))
         break
       }
     }
