@@ -19,6 +19,7 @@ export default class Init extends Command {
 
     const gitignoreData = `
 
+# upptime log files
 down.log
 error.log
 degraded.log
@@ -35,7 +36,7 @@ info.log`
       } else {
         fs.writeFileSync('.gitignore', gitignoreData)
       }
-      const response = await prompt([
+      const response: {name: string; url: string} = await prompt([
         {
           type: 'input',
           name: 'name',

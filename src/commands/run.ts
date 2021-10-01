@@ -3,15 +3,13 @@ import {flags} from '@oclif/command'
 import Command from '../base'
 import {schedule} from 'node-cron'
 import PQueue from 'p-queue'
-import {generateGraphs} from '../graphs'
 import {getConfig} from '../helpers/config'
 import {GRAPHS_CI_SCHEDULE, RESPONSE_TIME_CI_SCHEDULE, STATIC_SITE_CI_SCHEDULE, SUMMARY_CI_SCHEDULE, UPTIME_CI_SCHEDULE} from '../helpers/constants'
 import {UppConfig} from '../interfaces'
 import {generateSite} from '../site'
 import {generateSummary} from '../summary'
 import {update} from '../update'
-import {cli} from 'cli-ux'
-import { Dayvalues , Weekvalues, Monthvalues, Yearvalues} from '../helpers/graphs'
+import {generateGraphs} from '../graphs'
 
 export default class Run extends Command {
 static description = 'Run workflows'
@@ -44,7 +42,7 @@ async run() {
   // It would be desirable to execute each iteration of CI in a cycle
   if (flags.iterations) {
     for (let i = 0; i < flags.iterations; i++) {
-      console.log("running for "+i+1+"th iteration")
+      this.log('running for ' + i + 1 + 'th iteration')
       if (flags.uptime)
         queue.add(update)
       if (flags.responseTime)
@@ -70,9 +68,8 @@ async run() {
         queue.add(generateSite)
       }
     }
-  } 
-  else {
-    console.log("Setting up workflows")
+  } else {
+    this.log('Setting up workflows')
     // cli.action.stop('Workflows set-up complete')
     if (flags.uptime)
       returnWorkflows(update, config.workflowSchedule?.uptime ?? UPTIME_CI_SCHEDULE)
@@ -93,11 +90,5 @@ async run() {
       returnWorkflows(generateSite, config.workflowSchedule?.staticSite ?? STATIC_SITE_CI_SCHEDULE)
     }
   }
-  /* Experimenting env variables
-  const secret = '{'GH_PAT':'Yo'}'
-  const pwd: string = Buffer.from(execSync('pwd'), 'hex').toString('utf8')
-  execSync('export SECRETS_CONTEXT="haha"')
-  this.log(Buffer.from(execSync('echo $SECRETS_CONTEXT'), 'hex').toString('utf8'))
-  execSync(`npx -c run ${config.packages.response}`, {stdio: 'inherit'}) */
 }
 }
