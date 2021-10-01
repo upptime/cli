@@ -100,9 +100,7 @@ ${pageStatuses
           page.status === 'degraded' ?
             i18n.degraded || '🟨 Degraded' :
             i18n.down || '🟥 Down'
-      } | ${page.slug}.yml | <details><summary><img alt="${
-        i18n.responseTimeGraphAlt || 'Response time graph'
-      }" src="./graphs/${page.slug}/response-time-week.png" height="20"> ${page.timeWeek}${
+      } | ${page.slug}.yml | <details><summary> ${page.timeWeek}${
         i18n.ms || 'ms'
       }</summary><br><img alt="${
         i18n.responseTime || 'Response time'
