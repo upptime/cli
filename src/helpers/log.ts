@@ -1,4 +1,5 @@
 import {Logger} from 'winston'
+import {stat} from 'fs-extra'
 import {getIsLogColor, isLogColor} from './log-color'
 const winston = require('winston')
 const {format} = winston
@@ -29,6 +30,12 @@ export const printFormat = printf((info: {timestamp: string; level: string; mess
 export let statusLogger: { up: (arg0: string) => void; degraded: (arg0: string) => void; down: (arg0: string) => void }
 export let infoErrorLogger: Logger
 export const createLoggers = (async () => {
+  // Check if .uclirc.yml exists, if it doesn't then return
+  try {
+    await stat('.uclirc.yml')
+  } catch (_) {
+    return
+  }
   await getIsLogColor()
   infoErrorLogger = winston.loggers.add('infoError', {
     exitOnError: false,
