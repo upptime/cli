@@ -109,10 +109,10 @@ OPTIONS
   -u, --uptime
 ```
 
-*   **upp run**  runs all workflows according to user/default schedule
-*  **upp run -i 5**  runs all workflows 5 times in order
-*   **upp run -r**  runs only response time workflow according to user/default schedule
-*   **upp run -ri**  runs only response time workflow 5 times
+  * **upp run** : *runs all workflows according to user/default schedule*
+  * **upp run -i 5** : *runs all workflows 5 times in order*
+  * **upp run -r** : *runs only response time workflow according to user/default schedule*
+  * **upp run -ri** : *runs only response time workflow 5 times*
 
 
 _See code: [src/commands/run.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/run.ts)_
