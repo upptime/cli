@@ -2,7 +2,7 @@ import Command from '../base'
 import chalk from 'chalk'
 import child_process from 'child_process'
 import {flags} from '@oclif/command'
-import * as inquirer from 'inquirer'
+import inquirer from 'inquirer'
 
 enum configOptions {
   ADD_NOTIFICATION, ADD_ENDPOINT, OPEN_EDITOR
@@ -48,8 +48,14 @@ export default class Config extends Command {
     }
   }
 
+  getPlatformDefaultEditor() {
+    if (process.platform === 'win32')
+      return 'notepad'
+    return 'vi'
+  }
+
   spawnEditor() {
-    const editor = process.env.EDITOR || 'vi'
+    const editor = process.env.EDITOR || this.getPlatformDefaultEditor()
     const child = child_process.spawn(editor, ['.uclirc.yml'], {
       stdio: 'inherit',
     })
