@@ -11,7 +11,7 @@ export default class Config extends Command {
       stdio: 'inherit',
     })
 
-    child.on('exit', (error, code) => {
+    child.on('exit', (_code, _signal) => {
       this.log(chalk.green.inverse('Your upptime configured successfully!'))
     })
   }
