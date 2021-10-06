@@ -109,7 +109,7 @@ export const closeMaintenanceIncidents = async () => {
   // if it does, it must already be in .incidents.yml
   await getIncidents()
   const now = Date.now()
-  const ongoingMaintenanceEvents: {incident: Incidents['incidents']['0']; id: number}[] = []
+  const ongoingMaintenanceEvents: {incident: Incidents['incidents'][0]; id: number}[] = []
   const indexes = await getIndexes('maintenance')
   let hasDelta = false
   indexes.forEach(id => {

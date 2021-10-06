@@ -9,6 +9,7 @@ import {infoErrorLogger} from './log'
 
 // Error.stackTraceLimit = Infinity;
 export const Dayvalues = async (slug = '') => {
+  const values = []
   try {
     const config = await getConfig()
     const exists = config.sites.map(ob => Boolean(ob.slug === `${slug}` || slugify(ob.name) === `${slug}`))
@@ -17,7 +18,6 @@ export const Dayvalues = async (slug = '') => {
       const daysArray = (await readFile(join('.', 'history', 'response-data', `${slug.toLowerCase()}`, 'response-time-day.yml'), 'utf8')).split('\n')
       const num = daysArray.length
 
-      const values = []
       if (num < 5 + 1) {
         for (let i = 1; i < num; i++) {
           const element = Number(daysArray[i])
@@ -49,11 +49,12 @@ export const Dayvalues = async (slug = '') => {
     cli.action.stop(chalk.red('Some issue fetching response time data'))
   }
   // return array
-  // console.log("day ",values)
+  infoErrorLogger.info(`day ,${values}`)
   return values
 }
 
 export const Weekvalues = async (slug = '') => {
+  const values = []
   try {
     const config = await getConfig()
     const exists = config.sites.map(ob => ob.name === `${slug}`)
@@ -62,7 +63,6 @@ export const Weekvalues = async (slug = '') => {
       const daysArray = (await readFile(join('.', 'history', 'response-data', `${slug.toLowerCase()}`, 'response-time-week.yml'), 'utf8')).split('\n')
       const num = daysArray.length
 
-      const values = []
       if (num < 7 + 1) {
         for (let i = 1; i < num; i++) {
           const element = Number(daysArray[i])
@@ -92,11 +92,12 @@ export const Weekvalues = async (slug = '') => {
     cli.action.stop(chalk.red('Some issue fetching response time data'))
   }
   // return array
-  console.log('week ', values)
-  return values;
+  infoErrorLogger.info(`week , ${values}`)
+  return values
 }
 
 export const Monthvalues = async (slug = '') => {
+  const values = []
   try {
     const config = await getConfig()
 
@@ -107,7 +108,6 @@ export const Monthvalues = async (slug = '') => {
 
       const num = daysArray.length
 
-      const values = []
       if (num < 10 + 1) {
         for (let i = 1; i < num; i++) {
           const element = Number(daysArray[i])
@@ -137,11 +137,12 @@ export const Monthvalues = async (slug = '') => {
     cli.action.stop(chalk.red('Some issue fetching response time data'))
   }
   // return array
-  console.log('month ', values)
+  infoErrorLogger.info(`month , ${values}`)
   return values
 }
 
 export const Yearvalues = async (slug = '') => {
+  const values = []
   try {
     const config = await getConfig()
     const exists = config.sites.map(ob => ob.name === `${slug}`)
@@ -150,7 +151,6 @@ export const Yearvalues = async (slug = '') => {
       const daysArray = (await readFile(join('.', 'history', 'response-data', `${slug.toLowerCase()}`, 'response-time-year.yml'), 'utf8')).split('\n')
       const num = daysArray.length
 
-      const values = []
       if (num < 12 + 1) {
         for (let i = 1; i < num; i++) {
           const element = Number(daysArray[i])
@@ -180,7 +180,7 @@ export const Yearvalues = async (slug = '') => {
     cli.action.stop(chalk.red('Some issue fetching response time data'))
   }
   // return array
-  console.log('year ', values)
+  infoErrorLogger.info('year ', values)
   return values
 }
 
