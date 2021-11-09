@@ -2,11 +2,15 @@ import Command from '../base'
 import {shouldContinue} from '../helpers/should-continue'
 import chalk from 'chalk'
 import child_process from 'child_process'
+import {prompt} from 'enquirer'
 import {flags} from '@oclif/command'
-import inquirer from 'inquirer'
+import {addToEnv, getFromEnv, notificationsProviderGroup, possibleEnvVariables, ProviderTypes} from '../helpers/update-env-file'
+import {getSecret} from '../helpers/secrets'
 
-enum configOptions {
-  ADD_NOTIFICATION, ADD_ENDPOINT, OPEN_EDITOR
+const {AutoComplete, Select} = require('enquirer')
+
+enum ConfigOptions {
+  ADD_ENVIRONMENT_VARIABLE='ADD_ENVIRONMENT_VARIABLE', ADD_NOTIFICATION_PROVIDER='ADD_NOTIFICATION_PROVIDER', ADD_SITE='ADD_SITE', OPEN_EDITOR='OPEN_EDITOR', OPEN_TEMPLATE='OPEN_TEMPLATE'
 }
 
 export default class Config extends Command {
@@ -14,15 +18,18 @@ export default class Config extends Command {
 
   static flags = {
     help: flags.help({char: 'h', description: 'Show help for config cmd'}),
-    'add-endpoint': flags.string({char: 'e', description: 'Add endpoint to monitor'}),
-    'add-notification': flags.boolean({char: 'n', description: 'Quiet'}),
+    'add-site': flags.string({char: 's', description: 'Add site url to monitor'}),
+    'add-env-variable': flags.boolean({char: 'e', description: 'Add/edit environment variable'}),
+    'add-notification-provider': flags.boolean({char: 'n', description: 'Add/edit environment variables particular to a notification provider'}),
+    'open-editor': flags.boolean({char: 'o', description: 'Open in editor'}),
+    'open-template': flags.boolean({char: 't', description: 'Open template to edit'}),
   }
 
   async run() {
     const {flags} = this.parse(Config)
 
     const shouldContinueObj = await shouldContinue()
-    if (!shouldContinueObj.shouldContinue) {
+    if (!shouldContinueObj.continue) {
       this.log(shouldContinueObj.message)
       return
     }
@@ -30,59 +37,143 @@ export default class Config extends Command {
     let response: any
 
     if (Object.keys(flags).length === 0) {
-      const responses: any = await inquirer.prompt([{
+      const question = new Select({
         name: 'action',
-        message: 'select to config',
-        type: 'list',
+        message: 'Select config option:',
         choices: [{
-          name: 'Add Notification provider', value: configOptions.ADD_NOTIFICATION,
+          name: 'Add/edit environment variable', value: ConfigOptions.ADD_ENVIRONMENT_VARIABLE,
         }, {
-          name: 'Add endpoint to monitor', value: configOptions.ADD_ENDPOINT,
+          name: 'Add/edit notification provider', value: ConfigOptions.ADD_NOTIFICATION_PROVIDER,
         }, {
-          name: 'Other configurations (Open in editor)', value: configOptions.OPEN_EDITOR,
+          name: 'Add site url to monitor', value: ConfigOptions.ADD_SITE,
+        }, {
+          name: 'Other configurations (Open in editor)', value: ConfigOptions.OPEN_EDITOR,
+        }, {
+          name: 'Other configurations (Open template)', value: ConfigOptions.OPEN_TEMPLATE,
         }],
-      }])
-      response = responses.action
-    } else if (flags['add-endpoint']) {
-      response  = configOptions.ADD_ENDPOINT
-    } else if (flags['add-notification']) {
-      response  = configOptions.ADD_NOTIFICATION
-    }
+        result(names: any) {
+          return this.map(names)
+        },
+      })
+      response = Object.values(await question.run())[0]
+    } else if (flags['add-site']) response  = ConfigOptions.ADD_SITE
+    else if (flags['add-env-variable']) response  = ConfigOptions.ADD_ENVIRONMENT_VARIABLE
+    else if (flags['add-notification-provider']) response = ConfigOptions.ADD_NOTIFICATION_PROVIDER
+    else if (flags['open-editor']) response = ConfigOptions.OPEN_EDITOR
+    else if (flags['open-template']) response = ConfigOptions.OPEN_TEMPLATE
 
     switch (response) {
-    case configOptions.ADD_ENDPOINT:
+    case ConfigOptions.ADD_SITE:
       // Code to add a website
-
       break
-    case configOptions.ADD_NOTIFICATION:
-      // Ask which notification provider
-
+    case ConfigOptions.ADD_NOTIFICATION_PROVIDER:
+      await this.addNotificationProvider()
       break
-    case configOptions.OPEN_EDITOR:
+    case ConfigOptions.ADD_ENVIRONMENT_VARIABLE:
+      await this.addEnvironmentVariable()
+      break
+    case ConfigOptions.OPEN_EDITOR:
       this.spawnEditor()
       break
     }
   }
 
+  async addNotificationProvider() {
+    const providerTypes = Object.values(ProviderTypes).map(val => {
+      return {name: val}
+    })
+    const questionType = new Select({
+      name: 'providerType',
+      message: 'Select notification provider type:',
+      choices: providerTypes,
+    })
+    const providerType = await questionType.run()
+
+    const providers = Object.keys(notificationsProviderGroup)
+    .filter(key => notificationsProviderGroup[key].type === providerType)
+    .map(key => {
+      return {
+        name: notificationsProviderGroup[key].name,
+        value: key,
+      }
+    })
+
+    const questionProvider = new Select({
+      name: 'provider',
+      message: 'Select notification provider:',
+      choices: providers,
+      result(names: any) {
+        return this.map(names)
+      },
+    })
+    const provider = Object.values(await questionProvider.run())[0] as string
+    const providerObj = notificationsProviderGroup[provider]
+
+    /* Add dependsOn only if previously not set, it becomes tedious if user has to input
+    multiple providers of same type */
+    let listOfVariables: string[] = []
+    if (providerObj.dependsOn && providerObj.dependsOn.every(key => getSecret(key)))
+      listOfVariables = providerObj.dependsOn
+    listOfVariables.concat(providerObj.variables)
+
+    for await (const key of listOfVariables) {
+      const originalValue = getFromEnv(key)
+      const value: {env_variable_value: string} = await prompt({
+        name: 'env_variable_value',
+        type: 'input',
+        message: originalValue ? `${key} (${originalValue}):` : `${key}:`,
+      })
+      if (value.env_variable_value) addToEnv(key, value.env_variable_value)
+    }
+  }
+
+  async addEnvironmentVariable() {
+    const question = new AutoComplete({
+      name: 'env_variable',
+      message: 'Select environment variable?',
+      choices: possibleEnvVariables,
+      limit: 7,
+    })
+    const key = await question.run()
+    const originalValue = getFromEnv(key)
+    const value: {env_variable_value: string} = await prompt({
+      name: 'env_variable_value',
+      type: 'input',
+      message: originalValue ? `Value (${originalValue}):` : 'Value:',
+    })
+    if (value.env_variable_value) addToEnv(key, value.env_variable_value)
+  }
+
   // platform aware
   getPlatformDefaultEditor() {
     if (process.platform === 'win32')
-      return 'notepad'
+      return 'notepad' // though Wordpad is the default, but who uses Wordpad? (¬‿¬)
     // add more platforms
+
+    // sunos, linux, freebsd, openbsd, darwin, aix
+    // Who doesn't loves VI? (˘︹˘)
     return 'vi'
+  }
+
+  exitMessage(code: number | null) {
+    if (code === 0)
+      this.log(chalk.green.inverse('Your upptime configured successfully!'))
+    else
+      this.log(chalk.red.inverse('Your upptime did not configure!'))
   }
 
   spawnEditor() {
     const editor = process.env.EDITOR || this.getPlatformDefaultEditor()
+    if (editor === null) {
+      this.log()
+      return
+    }
     const child = child_process.spawn(editor, ['.uclirc.yml'], {
       stdio: 'inherit',
     })
 
     child.on('exit', (_code, _signal) => {
-      if (_code === 0)
-        this.log(chalk.green.inverse('Your upptime configured successfully!'))
-      else
-        this.log(chalk.red.inverse('Your upptime did not configure!'))
+      this.exitMessage(_code)
     })
   }
 }
