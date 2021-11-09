@@ -4,10 +4,10 @@ import {existsSync} from 'fs-extra'
 export class ShouldContinue {
   message: string | undefined
 
-  shouldContinue: boolean
+  continue: boolean
 
   constructor(shouldContinue: boolean, message?: string) {
-    this.shouldContinue = shouldContinue
+    this.continue = shouldContinue
     this.message = message
   }
 }
