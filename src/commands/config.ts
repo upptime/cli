@@ -13,6 +13,10 @@ enum ConfigOptions {
   ADD_ENVIRONMENT_VARIABLE='ADD_ENVIRONMENT_VARIABLE', ADD_NOTIFICATION_PROVIDER='ADD_NOTIFICATION_PROVIDER', ADD_SITE='ADD_SITE', OPEN_EDITOR='OPEN_EDITOR', OPEN_TEMPLATE='OPEN_TEMPLATE'
 }
 
+enum Code {
+  SUCCESS=0, USER_ABORT=-1
+}
+
 export default class Config extends Command {
   static description = 'configures uclirc.yml';
 
@@ -37,25 +41,30 @@ export default class Config extends Command {
     let response: any
 
     if (Object.keys(flags).length === 0) {
-      const question = new Select({
-        name: 'action',
-        message: 'Select config option:',
-        choices: [{
-          name: 'Add/edit environment variable', value: ConfigOptions.ADD_ENVIRONMENT_VARIABLE,
-        }, {
-          name: 'Add/edit notification provider', value: ConfigOptions.ADD_NOTIFICATION_PROVIDER,
-        }, {
-          name: 'Add site url to monitor', value: ConfigOptions.ADD_SITE,
-        }, {
-          name: 'Other configurations (Open in editor)', value: ConfigOptions.OPEN_EDITOR,
-        }, {
-          name: 'Other configurations (Open template)', value: ConfigOptions.OPEN_TEMPLATE,
-        }],
-        result(names: any) {
-          return this.map(names)
-        },
-      })
-      response = Object.values(await question.run())[0]
+      try {
+        const question = new Select({
+          name: 'action',
+          message: 'Select config option:',
+          choices: [{
+            name: 'Add/edit environment variable', value: ConfigOptions.ADD_ENVIRONMENT_VARIABLE,
+          }, {
+            name: 'Add/edit notification provider', value: ConfigOptions.ADD_NOTIFICATION_PROVIDER,
+          }, {
+            name: 'Add site url to monitor', value: ConfigOptions.ADD_SITE,
+          }, {
+            name: 'Other configurations (Open in editor)', value: ConfigOptions.OPEN_EDITOR,
+          }, {
+            name: 'Other configurations (Open template)', value: ConfigOptions.OPEN_TEMPLATE,
+          }],
+          result(names: any) {
+            return this.map(names)
+          },
+        })
+        response = Object.values(await question.run())[0]
+      } catch (error) {
+        this.exitMessage(Code.USER_ABORT)
+        return
+      }
     } else if (flags['add-site']) response  = ConfigOptions.ADD_SITE
     else if (flags['add-env-variable']) response  = ConfigOptions.ADD_ENVIRONMENT_VARIABLE
     else if (flags['add-notification-provider']) response = ConfigOptions.ADD_NOTIFICATION_PROVIDER
@@ -112,9 +121,9 @@ export default class Config extends Command {
     /* Add dependsOn only if previously not set, it becomes tedious if user has to input
     multiple providers of same type */
     let listOfVariables: string[] = []
-    if (providerObj.dependsOn && providerObj.dependsOn.every(key => getSecret(key)))
-      listOfVariables = providerObj.dependsOn
-    listOfVariables.concat(providerObj.variables)
+    if (providerObj.dependsOn && !providerObj.dependsOn.every(key => getSecret(key)))
+      listOfVariables = listOfVariables.concat(providerObj.dependsOn)
+    listOfVariables = listOfVariables.concat(providerObj.variables)
 
     for await (const key of listOfVariables) {
       const originalValue = getFromEnv(key)
@@ -158,6 +167,8 @@ export default class Config extends Command {
   exitMessage(code: number | null) {
     if (code === 0)
       this.log(chalk.green.inverse('Your upptime configured successfully!'))
+    else if (code === Code.USER_ABORT)
+      this.log(chalk.bgRed.white('Aborted! User generated interrupt'))
     else
       this.log(chalk.red.inverse('Your upptime did not configure!'))
   }
