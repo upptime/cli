@@ -6,6 +6,7 @@ import {prompt} from 'enquirer'
 import {flags} from '@oclif/command'
 import {addToEnv, getFromEnv, notificationsProviderGroup, possibleEnvVariables, ProviderTypes} from '../helpers/update-env-file'
 import {getSecret} from '../helpers/secrets'
+// import {getConfig} from '../helpers/config'
 
 const {AutoComplete, Select} = require('enquirer')
 
@@ -22,11 +23,11 @@ export default class Config extends Command {
 
   static flags = {
     help: flags.help({char: 'h', description: 'Show help for config cmd'}),
-    'add-site': flags.string({char: 's', description: 'Add site url to monitor'}),
+    // 'add-site': flags.string({char: 's', description: 'Add site url to monitor'}),
     'add-env-variable': flags.boolean({char: 'e', description: 'Add/edit environment variable'}),
     'add-notification-provider': flags.boolean({char: 'n', description: 'Add/edit environment variables particular to a notification provider'}),
     'open-editor': flags.boolean({char: 'o', description: 'Open in editor'}),
-    'open-template': flags.boolean({char: 't', description: 'Open template to edit'}),
+    // 'open-template': flags.boolean({char: 't', description: 'Open template to edit'}),
   }
 
   async run() {
@@ -50,11 +51,11 @@ export default class Config extends Command {
           }, {
             name: 'Add/edit notification provider', value: ConfigOptions.ADD_NOTIFICATION_PROVIDER,
           }, {
-            name: 'Add site url to monitor', value: ConfigOptions.ADD_SITE,
-          }, {
+          //   name: 'Add site url to monitor', value: ConfigOptions.ADD_SITE,
+          // }, {
             name: 'Other configurations (Open in editor)', value: ConfigOptions.OPEN_EDITOR,
-          }, {
-            name: 'Other configurations (Open template)', value: ConfigOptions.OPEN_TEMPLATE,
+          // }, {
+            // name: 'Other configurations (Open template)', value: ConfigOptions.OPEN_TEMPLATE,
           }],
           result(names: any) {
             return this.map(names)
@@ -65,16 +66,16 @@ export default class Config extends Command {
         this.exitMessage(Code.USER_ABORT)
         return
       }
-    } else if (flags['add-site']) response  = ConfigOptions.ADD_SITE
-    else if (flags['add-env-variable']) response  = ConfigOptions.ADD_ENVIRONMENT_VARIABLE
+    } else if (flags['add-env-variable']) response  = ConfigOptions.ADD_ENVIRONMENT_VARIABLE
     else if (flags['add-notification-provider']) response = ConfigOptions.ADD_NOTIFICATION_PROVIDER
     else if (flags['open-editor']) response = ConfigOptions.OPEN_EDITOR
-    else if (flags['open-template']) response = ConfigOptions.OPEN_TEMPLATE
+    // else if (flags['open-template']) response = ConfigOptions.OPEN_TEMPLATE
+    // else if (flags['add-site']) response  = ConfigOptions.ADD_SITE
 
     switch (response) {
-    case ConfigOptions.ADD_SITE:
-      // Code to add a website
-      break
+    // case ConfigOptions.ADD_SITE:
+    //   // Code to add a website
+    //   break
     case ConfigOptions.ADD_NOTIFICATION_PROVIDER:
       await this.addNotificationProvider()
       break
@@ -84,6 +85,9 @@ export default class Config extends Command {
     case ConfigOptions.OPEN_EDITOR:
       this.spawnEditor()
       break
+    // case ConfigOptions.OPEN_TEMPLATE:
+    //   this.configTemplate()
+    //   break
     }
   }
 
@@ -155,13 +159,21 @@ export default class Config extends Command {
 
   // platform aware
   getPlatformDefaultEditor() {
-    if (process.platform === 'win32')
-      return 'notepad' // though Wordpad is the default, but who uses Wordpad? (¬‿¬)
-    // add more platforms
-
-    // sunos, linux, freebsd, openbsd, darwin, aix
-    // Who doesn't loves VI? (˘︹˘)
-    return 'vi'
+    let editor = null
+    switch (process.platform) {
+    case 'win32': // though Wordpad is the default, I feel generally users prefer notepad
+      editor = 'notepad'
+      break
+    case 'aix':
+    case 'linux':
+    case 'darwin':
+    case 'freebsd':
+    case 'sunos':
+    case 'openbsd':
+      editor = 'vi'
+      break
+    }
+    return editor
   }
 
   exitMessage(code: number | null) {
@@ -176,15 +188,27 @@ export default class Config extends Command {
   spawnEditor() {
     const editor = process.env.EDITOR || this.getPlatformDefaultEditor()
     if (editor === null) {
-      this.log()
+      this.log('Set "EDITOR" env variable to open your favorite editor')
       return
     }
     const child = child_process.spawn(editor, ['.uclirc.yml'], {
       stdio: 'inherit',
     })
-
     child.on('exit', (_code, _signal) => {
       this.exitMessage(_code)
     })
   }
+
+  // async configTemplate() {
+  //   const config = await getConfig()
+  //   const snippet = new Snippet({
+  //     name: 'config',
+  //     message: 'Fill out the fields in uclirc.yaml',
+  //     template: config.toString(),
+  //   })
+
+  //   snippet.run()
+  //   .then((answer: { result: any }) => this.log('Answer:', answer.result))
+  //   .catch(this.error)
+  // }
 }
