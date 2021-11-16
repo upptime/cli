@@ -6,6 +6,6 @@ export default class MyHelpClass extends Help {
   // the formatting responsible for the header
   // displayed for the root help
   formatRoot(): string {
-    return `\n${chalk.green(figlet.textSync('Upptime', {font: 'ANSI Shadow', verticalLayout: 'controlled smushing'}))}\n${super.formatRoot()}`
+    return `\n${chalk.green(figlet.textSync('Upptime', {font: 'ANSI Shadow'}))}\n${super.formatRoot()}`
   }
 }
