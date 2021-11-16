@@ -1,7 +1,7 @@
 name: Update CACERT
 on:
   schedule:
-    - cron: "* * */15 * *"
+    - cron: "0 0 */15 * *"
   repository_dispatch:
     types: [cacert]
   workflow_dispatch:
