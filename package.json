@@ -1,7 +1,7 @@
 {
   "name": "upp",
   "description": "Uptime monitor and status page powered by GitHub Actions, Issues, and Pages",
-  "version": "0.0.0",
+  "version": "0.1.0-beta",
   "author": "Nirmitjatana @Nirmitjatana",
   "bin": {
     "upp": "./bin/run"
@@ -12,6 +12,7 @@
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
     "@sindresorhus/slugify": "^1.1.1",
+    "@types/figlet": "^1.5.4",
     "axios": "^0.21.4",
     "chalk": "^4.1.2",
     "chart.js": "^3.5.1",
@@ -21,6 +22,7 @@
     "dayjs": "^1.10.6",
     "dotenv": "^10.0.0",
     "enquirer": "^2.3.6",
+    "figlet": "^1.5.2",
     "fs-extra": "^10.0.0",
     "inquirer": "^8.1.5",
     "js-yaml": "^4.1.0",
@@ -82,6 +84,7 @@
   "oclif": {
     "commands": "./lib/commands",
     "bin": "upp",
+    "helpClass": "./lib/help",
     "plugins": [
       "@oclif/plugin-help"
     ]
