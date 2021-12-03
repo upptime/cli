@@ -225,11 +225,14 @@ generator: Upptime <https://github.com/upptime/upptime>
           // If the site was just recorded as down or degraded, open an issue
           if ((status === 'down' || status === 'degraded') && !expected) {
             if (issueAlreadyExistsIndex === undefined) {
+              const cute_file_name: string = uniqueNamesGenerator({
+                dictionaries: [adjectives, colors, animals]
+              }); 
               createIncident(site, {
                 assignees: [...(config.assignees || []), ...(site.assignees || [])],
                 author: 'Upptime Bot',
                 labels: ['status', slug],
-              }, status === 'down' ?
+              },cute_file_name, status === 'down' ?
                 `🛑 ${site.name} is down` :
                 `⚠️ ${site.name} has degraded performance`
               , `In \`${lastCommitSha.substr(
