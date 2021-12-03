@@ -36,6 +36,7 @@
     "shelljs": "^0.8.4",
     "tcp-ping": "^0.1.1",
     "tslib": "^1",
+    "unique-names-generator": "^4.6.0",
     "whatwg-url": "^9.1.0",
     "winston": "^3.3.3"
   },
