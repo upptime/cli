@@ -17,6 +17,8 @@ import cli from 'cli-ux'
 import chalk from 'chalk'
 import {closeIncident, closeMaintenanceIncidents, createComment, createIncident, getIncidents, getIndexes} from './helpers/incidents'
 import {sendNotification} from './helpers/notifme'
+import { uniqueNamesGenerator, Config, adjectives, colors, animals } from 'unique-names-generator';
+
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 export const update = async (shouldCommit = false) => {
