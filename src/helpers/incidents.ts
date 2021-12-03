@@ -50,7 +50,7 @@ export const getIndexes = async (label: string): Promise<number[]> => {
   return indexes
 }
 
-export const createIncident = async (site: UppConfig['sites'][0], meta: {willCloseAt?: number; slug?: string; author: string; assignees: string[]; labels: string[]}, title: string, desc: string): Promise<void> => {
+export const createIncident = async (site: UppConfig['sites'][0], meta: {willCloseAt?: number; slug?: string; author: string; assignees: string[]; labels: string[]}, title: string, headline:string, desc: string): Promise<void> => {
   const slug = meta.slug ?? site.slug ?? slugify(site.name)
   const incidents = await getIncidents()
   const id = incidents.useID
@@ -79,14 +79,14 @@ export const createIncident = async (site: UppConfig['sites'][0], meta: {willClo
   }))
 
   // write to incidents/slugified-site-folder/$id-$title.md
-  const mdPath = path.join('incidents', `${id}# ${title}.md`)
+  const mdPath = path.join('incidents', `${title}.md`)
   await ensureFile(mdPath)
   const content = `---
 id: ${id}
 assignees: ${meta.assignees?.join(', ')}
 labels: ${meta.labels.join(', ')}
 ---
-# ${title}
+# ${headline}
 
 <!--start:commment author:${meta.author} last_modified:${now}-->
 ${desc}
@@ -159,7 +159,7 @@ export const closeIncident = async (id: number) => {
 }
 
 export const createComment = async (meta: {slug: string; id: number; title: string; author: string}, comment: string) => {
-  const filePath = path.join('incidents', `${meta.id}# ${meta.title}.md`)
+  const filePath = path.join('incidents', `${meta.title}.md`)
   await appendFile(filePath, `
 <!--start:commment author:${meta.author} last_modified:${Date.now()}-->
 ${comment}
