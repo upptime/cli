@@ -1,5 +1,5 @@
 {
-  "name": "upp",
+  "name": "@upptime/upp",
   "description": "Uptime monitor and status page powered by GitHub Actions, Issues, and Pages",
   "version": "0.1.0-beta",
   "author": "Nirmitjatana @Nirmitjatana",
