@@ -4,10 +4,10 @@ Upptime CLI
 Uptime monitor and status page powered by GitHub Actions, Issues, and Pages
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/upp.svg)](https://npmjs.org/package/upp)
+[![Version](https://img.shields.io/npm/v/@upptime/upp.svg)](https://npmjs.org/package/@upptime/upp)
 [![CircleCI](https://circleci.com/gh/upptime/cli/tree/master.svg?style=shield)](https://circleci.com/gh/upptime/cli/tree/master)
-[![Downloads/week](https://img.shields.io/npm/dw/upp.svg)](https://npmjs.org/package/upp)
-[![License](https://img.shields.io/npm/l/upp.svg)](https://github.com/upptime/cli/blob/master/package.json)
+[![Downloads/week](https://img.shields.io/npm/dw/@upptime/upp.svg)](https://npmjs.org/package/@upptime/upp)
+[![License](https://img.shields.io/npm/l/@upptime/upp.svg)](https://github.com/upptime/cli/blob/master/package.json)
 
 <!-- toc -->
 * [Usage](#usage)
@@ -16,11 +16,11 @@ Uptime monitor and status page powered by GitHub Actions, Issues, and Pages
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g upp
+$ npm install -g @upptime/upp
 $ upp COMMAND
 running command...
 $ upp (-v|--version|version)
-upp/0.0.0 darwin-x64 node-v14.17.6
+@upptime/upp/0.1.0-beta linux-x64 node-v14.21.3
 $ upp --help [COMMAND]
 USAGE
   $ upp COMMAND
@@ -32,10 +32,10 @@ USAGE
 * [`upp config`](#upp-config)
 * [`upp docs`](#upp-docs)
 * [`upp help [COMMAND]`](#upp-help-command)
+* [`upp incidents`](#upp-incidents)
 * [`upp init`](#upp-init)
 * [`upp run [ITERATIONS]`](#upp-run-iterations)
 * [`upp status`](#upp-status)
-* [`upp incidents`](#upp-incidents)
 
 ## `upp config`
 
@@ -46,12 +46,13 @@ USAGE
   $ upp config
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -e, --add-env-variable           Add/edit environment variable
+  -h, --help                       Show help for config cmd
+  -n, --add-notification-provider  Add/edit environment variables particular to a notification provider
+  -o, --open-editor                Open in editor
 ```
 
-_See code: [src/commands/config.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/config.ts)_
+_See code: [src/commands/config.ts](https://github.com/upptime/cli/blob/v0.1.0-beta/src/commands/config.ts)_
 
 ## `upp docs`
 
@@ -62,7 +63,7 @@ USAGE
   $ upp docs
 ```
 
-_See code: [src/commands/docs.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/docs.ts)_
+_See code: [src/commands/docs.ts](https://github.com/upptime/cli/blob/v0.1.0-beta/src/commands/docs.ts)_
 
 ## `upp help [COMMAND]`
 
@@ -81,6 +82,28 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.3/src/commands/help.ts)_
 
+## `upp incidents`
+
+reports all the incidents/downtimes
+
+```
+USAGE
+  $ upp incidents
+
+OPTIONS
+  -e, --edit=edit    Edit an Issue
+  -h, --help         Show help for run cmd
+  -x, --extended     show extra columns
+  --columns=columns  only show provided columns (comma-separated)
+  --csv              output is csv format
+  --filter=filter    filter property by partial string matching, ex: name=foo
+  --no-header        hide table header from output
+  --no-truncate      do not truncate output to fit screen
+  --sort=sort        property to sort by (prepend '-' for descending)
+```
+
+_See code: [src/commands/incidents.ts](https://github.com/upptime/cli/blob/v0.1.0-beta/src/commands/incidents.ts)_
+
 ## `upp init`
 
 initializes upptime
@@ -90,7 +113,7 @@ USAGE
   $ upp init
 ```
 
-_See code: [src/commands/init.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/upptime/cli/blob/v0.1.0-beta/src/commands/init.ts)_
 
 ## `upp run [ITERATIONS]`
 
@@ -101,21 +124,17 @@ USAGE
   $ upp run [ITERATIONS]
 
 OPTIONS
-  -g, --graphs
-  -h, --help                   show CLI help
-  -i, --iterations=iterations  number of iterations
-  -p, --staticSite
-  -s, --summary
-  -u, --uptime
+  -g, --graphs                 Generate graphs
+  -h, --help                   Show help for run cmd
+  -i, --iterations=iterations  Number of iterations
+  -p, --staticSite             Generate and build static site
+  -q, --quiet                  Quiet
+  -r, --responseTime           Commit response time
+  -s, --summary                Generate README.md
+  -u, --uptime                 Check change in status
 ```
 
-  * **upp run** : *runs all workflows according to user/default schedule*
-  * **upp run -i 5** : *runs all workflows 5 times in order*
-  * **upp run -r** : *runs only response time workflow according to user/default schedule*
-  * **upp run -ri** : *runs only response time workflow 5 times*
-
-
-_See code: [src/commands/run.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/run.ts)_
+_See code: [src/commands/run.ts](https://github.com/upptime/cli/blob/v0.1.0-beta/src/commands/run.ts)_
 
 ## `upp status`
 
@@ -126,16 +145,5 @@ USAGE
   $ upp status
 ```
 
-_See code: [src/commands/status.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/status.ts)_
-
-## `upp incidents`
-
-reports all the incidents/downtimes
-
-```
-USAGE
-  $ upp incidents
-```
-
-_See code: [src/commands/status.ts](https://github.com/upptime/cli/blob/v0.0.0/src/commands/status.ts)_
+_See code: [src/commands/status.ts](https://github.com/upptime/cli/blob/v0.1.0-beta/src/commands/status.ts)_
 <!-- commandsstop -->
