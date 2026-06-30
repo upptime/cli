@@ -5,30 +5,40 @@ on:
   repository_dispatch:
     types: [cacert]
   workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cacert-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   update:
     name: Update CACERT
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v7
         with:
-          persist-credentials: false
+          ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
+          token: ${{ secrets.GH_PAT || github.token }}
       - name: Get CACERT extracted by curl
         run: |
           curl --remote-name --time-cond cacert.pem https://curl.se/ca/cacert.pem
       - name: Stage and commit changes
         id: commit
-        continue-on-error: true
         run: |
-          git add .
+          git add cacert.pem
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           git config --local user.email "73812536+upptime-bot@users.noreply.github.com"
           git config --local user.name "Upptime Bot"
           git commit -m ":arrow_up: update CACERT"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
       - name: Push changes
-        if: steps.commit.outcome == 'success' 
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GH_PAT }}
-          branch: ${{ github.ref }}
+        if: steps.commit.outputs.changed == 'true'
+        run: git push origin HEAD:${{ github.ref_name }}
