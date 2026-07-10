@@ -5,9 +5,9 @@ Uptime monitor and status page powered by GitHub Actions, Issues, and Pages
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/@upptime/upp.svg)](https://npmjs.org/package/@upptime/upp)
-[![CircleCI](https://circleci.com/gh/upptime/cli/tree/master.svg?style=shield)](https://circleci.com/gh/upptime/cli/tree/master)
+[![CircleCI](https://circleci.com/gh/upptime/cli/tree/main.svg?style=shield)](https://circleci.com/gh/upptime/cli/tree/main)
 [![Downloads/week](https://img.shields.io/npm/dw/@upptime/upp.svg)](https://npmjs.org/package/@upptime/upp)
-[![License](https://img.shields.io/npm/l/@upptime/upp.svg)](https://github.com/upptime/cli/blob/master/package.json)
+[![License](https://img.shields.io/npm/l/@upptime/upp.svg)](https://github.com/upptime/cli/blob/main/package.json)
 
 <!-- toc -->
 * [Usage](#usage)
