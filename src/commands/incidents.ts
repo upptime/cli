@@ -8,7 +8,7 @@ export default class Incidents extends Command {
   static description = 'reports all the incidents/downtimes'
 
   static flags = {
-    help: flags.help({char: 'h', description: 'Show help for run cmd'}),
+    help: flags.help({char: 'h', description: 'Show help for incidents cmd'}),
     edit: flags.integer({char: 'e', name: 'edit', description: 'Edit an Issue'}),
     columns: flags.string({exclusive: ['additional'], description: 'only show provided columns (comma-separated)'}),
     sort: flags.string({description: 'property to sort by (prepend \'-\' for descending)'}),

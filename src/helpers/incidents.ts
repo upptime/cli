@@ -88,7 +88,7 @@ labels: ${meta.labels.join(', ')}
 ---
 # ${headline}
 
-<!--start:commment author:${meta.author} last_modified:${now}-->
+<!--start:comment author:${meta.author} last_modified:${now}-->
 ${desc}
 <!--end:comment -->
 ---
@@ -161,7 +161,7 @@ export const closeIncident = async (id: number) => {
 export const createComment = async (meta: {slug: string; id: number; title: string; author: string}, comment: string) => {
   const filePath = path.join('incidents', `${meta.title}.md`)
   await appendFile(filePath, `
-<!--start:commment author:${meta.author} last_modified:${Date.now()}-->
+<!--start:comment author:${meta.author} last_modified:${Date.now()}-->
 ${comment}
 <!--end:comment --> 
 
